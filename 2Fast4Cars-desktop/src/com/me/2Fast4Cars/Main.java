@@ -1,4 +1,4 @@
-package com.2Fast4Cars.package;
+package com.me.2Fast4Cars;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;

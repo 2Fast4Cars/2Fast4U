@@ -5,9 +5,9 @@ using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using com.badlogic.gdx.backends.ios;
-using com.2Fast4Cars.package;
+using com.me.2Fast4Cars;
 
-namespace com.2Fast4Cars.package
+namespace com.me.2Fast4Cars
 {		
 	public class Application
 	{

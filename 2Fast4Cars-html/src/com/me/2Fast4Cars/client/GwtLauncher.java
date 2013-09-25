@@ -1,6 +1,6 @@
-package com.2Fast4Cars.package.client;
+package com.me.2Fast4Cars.client;
 
-import com.2Fast4Cars.package.2Fast4Cars;
+import com.me.2Fast4Cars.2Fast4Cars;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;

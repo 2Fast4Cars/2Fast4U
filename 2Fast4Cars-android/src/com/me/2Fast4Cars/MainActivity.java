@@ -1,4 +1,4 @@
-package com.2Fast4Cars.package;
+package com.me.2Fast4Cars;
 
 import android.os.Bundle;
 

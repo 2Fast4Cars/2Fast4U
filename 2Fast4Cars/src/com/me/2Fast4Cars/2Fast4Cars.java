@@ -1,4 +1,4 @@
-package com.2Fast4Cars.package;
+package com.me.2Fast4Cars;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;

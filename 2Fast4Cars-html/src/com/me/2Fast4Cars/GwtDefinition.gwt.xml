@@ -5,6 +5,6 @@
 	<inherits name='aurelienribon.bodyeditorloader' />
 	<inherits name='aurelienribon.tweenengine' />
 	<inherits name='2Fast4Cars' />
-	<entry-point class='com.2Fast4Cars.package.client.GwtLauncher' />
+	<entry-point class='com.me.2Fast4Cars.client.GwtLauncher' />
 	<set-configuration-property name="gdx.assetpath" value="../2Fast4Cars-android/assets" />
 </module>
