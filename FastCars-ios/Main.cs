@@ -5,15 +5,15 @@ using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using com.badlogic.gdx.backends.ios;
-using com.me.2Fast4Cars;
+using com.me.fastcars;
 
-namespace com.me.2Fast4Cars
+namespace com.me.fastcars
 {		
 	public class Application
 	{
 		[Register ("AppDelegate")]
 		public partial class AppDelegate : IOSApplication {
-			public AppDelegate(): base(new 2Fast4Cars(), getConfig()) {
+			public AppDelegate(): base(new FastCars(), getConfig()) {
 
 			}
 

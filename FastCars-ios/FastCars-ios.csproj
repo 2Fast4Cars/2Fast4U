@@ -154,8 +154,8 @@
 	<Reference Include="libObjectAL">
       <HintPath>libs\ios\objectal\libObjectAL.dll</HintPath>
     </Reference>
-    <Reference Include="2Fast4Cars">
-      <HintPath>target\2Fast4Cars.dll</HintPath>
+    <Reference Include="FastCars">
+      <HintPath>target\FastCars.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -171,7 +171,7 @@
     <Folder Include="data\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\2Fast4Cars-android\assets\data\libgdx.png">
+    <Content Include="..\FastCars-android\assets\data\libgdx.png">
       <Link>data\libgdx.png</Link>
     </Content>
   </ItemGroup>
