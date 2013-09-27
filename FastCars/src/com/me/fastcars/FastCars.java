@@ -32,7 +32,7 @@ public class FastCars implements ApplicationListener {
 	private int screenHeight;	
 	private float worldWidth;
 	private float worldHeight;
-	private static int PIXELS_PER_METER=16;      //how many pixels in a meter
+	private static int PIXELS_PER_METER=10;      //how many pixels in a meter
 	
 	public static final int STEER_NONE=0;
 	public static final int STEER_RIGHT=1;
@@ -42,14 +42,16 @@ public class FastCars implements ApplicationListener {
 	public static final int ACC_ACCELERATE=1;
 	public static final int ACC_BRAKE=2;
 	
-	private static final float CAR_WIDTH = 2;
-	private static final float CAR_LENGTH = 4;
+	private static final float CAR_WIDTH = 1;
+	private static final float CAR_LENGTH = 2;
 	
 	private static final float MAXSPEED = 70;
 	private static final float POWER = 60;
 	private static int STEERANGLE = 35;
-
-
+	private static float TRACK_WIDTH = 100;
+	private TrackLoader track; 
+	
+	
 	public Car car;
 	
 	
@@ -73,9 +75,9 @@ public class FastCars implements ApplicationListener {
 		
 		world = new World(new Vector2(0.0f, 0.0f), true);	
 		
-
+		this.track = new TrackLoader("bana1" , world, TRACK_WIDTH);
 	    this.car = new Car(world, CAR_WIDTH, CAR_LENGTH,
-	    		new Vector2(0, 0), (float) Math.PI, POWER, STEERANGLE, MAXSPEED);
+	    		new Vector2(8, 35), (float) Math.PI, POWER, STEERANGLE, MAXSPEED);
 	    
 		
 	    debugRenderer = new Box2DDebugRenderer();
@@ -135,7 +137,7 @@ public class FastCars implements ApplicationListener {
 		Vector2 carModelorigin = car.getBodyOrigin();
 		
 		
-		carSprite.setPosition((carPosition.x*PIXELS_PER_METER + screenWidth/2) - carSprite.getWidth()/2, (carPosition.y*PIXELS_PER_METER + screenHeight/2) - carSprite.getHeight()/2);
+		carSprite.setPosition((carPosition.x*PIXELS_PER_METER) - carSprite.getWidth()/2, (carPosition.y*PIXELS_PER_METER) - carSprite.getHeight()/2);
 		System.out.println("Tjena! Här kommer angle: " + car.getAngle() * MathUtils.radiansToDegrees + " Plus position: " + carSprite.getX() + " " + carSprite.getY());
 		carSprite.setOrigin(carSprite.getWidth()/2, carSprite.getHeight()/2);
 		carSprite.setRotation(car.getAngle() * MathUtils.radiansToDegrees -180);
@@ -151,10 +153,11 @@ public class FastCars implements ApplicationListener {
 		
 		camera.setToOrtho(false, 1000, 600);
 		camera.combined.setToOrtho2D(0, 0, screenWidth, screenHeight);
-//		debugRenderer.render(world, camera.combined.scale(PIXELS_PER_METER,PIXELS_PER_METER,PIXELS_PER_METER));
+		debugRenderer.render(world, camera.combined.scale(PIXELS_PER_METER,PIXELS_PER_METER,PIXELS_PER_METER));
 
 	}
-
+	
+	
 	@Override
 	public void resize(int width, int height) {
 	}
