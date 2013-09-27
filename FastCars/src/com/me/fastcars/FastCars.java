@@ -49,7 +49,10 @@ public class FastCars implements ApplicationListener {
 	private static final float POWER = 60;
 	private static int STEERANGLE = 35;
 	private static float TRACK_WIDTH = 100;
+	
 	private TrackLoader track; 
+	private String trackName; 
+	private Sprite mapSprite;
 	
 	
 	public Car car;
@@ -57,6 +60,9 @@ public class FastCars implements ApplicationListener {
 	
 	@Override
 	public void create() {		
+		
+		this.trackName = "bana1";
+		
 		screenWidth = Gdx.graphics.getWidth();
 		screenHeight = Gdx.graphics.getHeight();
 		worldWidth = screenWidth / PIXELS_PER_METER;
@@ -67,15 +73,19 @@ public class FastCars implements ApplicationListener {
 		screenHeight = Gdx.graphics.getHeight();
 		worldWidth = screenWidth / PIXELS_PER_METER;
 		worldHeight = screenHeight / PIXELS_PER_METER;
+		
+		world = new World(new Vector2(0.0f, 0.0f), true);	
+
+		
+		this.track = new TrackLoader(trackName , world, TRACK_WIDTH);
 		
 		createSprites();
 
 		camera = new OrthographicCamera(screenWidth, screenHeight);
 		batch = new SpriteBatch();
 		
-		world = new World(new Vector2(0.0f, 0.0f), true);	
 		
-		this.track = new TrackLoader("bana2" , world, TRACK_WIDTH);
+		
 	    this.car = new Car(world, CAR_WIDTH, CAR_LENGTH,
 	    		new Vector2(8, 35), (float) Math.PI, POWER, STEERANGLE, MAXSPEED);
 	    
@@ -86,16 +96,16 @@ public class FastCars implements ApplicationListener {
 
 
 	private void createSprites() {
-		
+				
 		carTexture = new Texture(Gdx.files.internal("data/gfx/CarRed.png"));
 		carTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 		carSprite = new Sprite(carTexture);
 		carSprite.setSize(PIXELS_PER_METER*CAR_WIDTH, PIXELS_PER_METER*CAR_WIDTH  * carSprite.getHeight()/ carSprite.getWidth());
 
-		car2Sprite = new Sprite(carTexture);
-		car2Sprite.setSize(200, 400);
-
+		mapSprite = track.createSprite();
+		mapSprite.setSize(PIXELS_PER_METER*TRACK_WIDTH, PIXELS_PER_METER*TRACK_WIDTH  * mapSprite.getHeight()/ mapSprite.getWidth());
+		mapSprite.setPosition(0, 0);
 		
 	}
 
@@ -137,12 +147,14 @@ public class FastCars implements ApplicationListener {
 		Vector2 carModelorigin = car.getBodyOrigin();
 		
 		
+		
 		carSprite.setPosition((carPosition.x*PIXELS_PER_METER) - carSprite.getWidth()/2, (carPosition.y*PIXELS_PER_METER) - carSprite.getHeight()/2);
 		System.out.println("Tjena! Här kommer angle: " + car.getAngle() * MathUtils.radiansToDegrees + " Plus position: " + carSprite.getX() + " " + carSprite.getY());
 		carSprite.setOrigin(carSprite.getWidth()/2, carSprite.getHeight()/2);
 		carSprite.setRotation(car.getAngle() * MathUtils.radiansToDegrees -180);
 	
 		batch.begin();
+		mapSprite.draw(batch);
 		carSprite.draw(batch);
 		batch.end();
 
@@ -153,7 +165,7 @@ public class FastCars implements ApplicationListener {
 		
 		camera.setToOrtho(false, 1000, 600);
 		camera.combined.setToOrtho2D(0, 0, screenWidth, screenHeight);
-		debugRenderer.render(world, camera.combined.scale(PIXELS_PER_METER,PIXELS_PER_METER,PIXELS_PER_METER));
+//		debugRenderer.render(world, camera.combined.scale(PIXELS_PER_METER,PIXELS_PER_METER,PIXELS_PER_METER));
 
 	}
 	
