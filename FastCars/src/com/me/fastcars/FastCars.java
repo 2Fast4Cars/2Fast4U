@@ -1,7 +1,5 @@
 package com.me.fastcars;
 
-import aurelienribon.bodyeditor.BodyEditorLoader;
-
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -9,15 +7,14 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.sun.xml.internal.ws.util.StringUtils;
 
 public class FastCars implements ApplicationListener {
 	private OrthographicCamera camera;
@@ -54,7 +51,11 @@ public class FastCars implements ApplicationListener {
 	private String trackName; 
 	private Sprite mapSprite;
 	
+	private BitmapFont font;
+	private long startTime;
+	
 	private boolean twoPlayers = true;
+	
 	
 	public Car car;
 	public Car car2;	
@@ -62,7 +63,13 @@ public class FastCars implements ApplicationListener {
 	@Override
 	public void create() {		
 		
+		
+		
 		this.trackName = "bana1";
+		
+		font = new BitmapFont();
+		
+		startTime = System.currentTimeMillis();
 		
 		screenWidth = Gdx.graphics.getWidth();
 		screenHeight = Gdx.graphics.getHeight();
@@ -132,6 +139,19 @@ public class FastCars implements ApplicationListener {
 		world.dispose();
 	}
 
+	private String formatTime(long time){
+//		long seconds = TimeUnit.SECONDS.convert(time, TimeUnit.NANOSECONDS);
+		double rest = time%1000;
+		double seconds = (double)time/1000;
+		double minutes = seconds/60;
+		
+
+//		long tenthOfSecond = TimeUnit.MICROSECONDS.convert(time - seconds, TimeUnit.NANOSECONDS);
+		
+		return String.format("%02d:%02d:%d",(int)minutes, (int)seconds, (int)rest);
+
+	}
+	
 	@Override
 	public void render() {		
 		Gdx.gl.glClearColor(1, 1, 1, 1);
@@ -140,6 +160,7 @@ public class FastCars implements ApplicationListener {
 //		camera.combined.scale(PIXELS_PER_METER, PIXELS_PER_METER, PIXELS_PER_METER);
 		camera.update();
 
+		CharSequence str = this.formatTime((System.currentTimeMillis() - startTime));
 		
 //		Keys for player one.
 		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_UP))
@@ -192,6 +213,7 @@ public class FastCars implements ApplicationListener {
 		
 		
 		
+		
 		carSprite.setPosition((carPosition.x*PIXELS_PER_METER) - carSprite.getWidth()/2, (carPosition.y*PIXELS_PER_METER) - carSprite.getHeight()/2);
 		System.out.println("Tjena! Här kommer angle: " + car.getAngle() * MathUtils.radiansToDegrees + " Plus position: " + carSprite.getX() + " " + carSprite.getY());
 		carSprite.setOrigin(carSprite.getWidth()/2, carSprite.getHeight()/2);
@@ -203,6 +225,8 @@ public class FastCars implements ApplicationListener {
 		carSprite.draw(batch);
 		if(twoPlayers)
 			car2Sprite.draw(batch);
+		font.setColor(0,0,0,1);
+		font.draw(batch,str, 900, 580);
 		batch.end();
 
 		
