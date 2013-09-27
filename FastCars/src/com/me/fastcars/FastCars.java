@@ -75,7 +75,7 @@ public class FastCars implements ApplicationListener {
 		
 		world = new World(new Vector2(0.0f, 0.0f), true);	
 		
-		this.track = new TrackLoader("bana1" , world, TRACK_WIDTH);
+		this.track = new TrackLoader("bana2" , world, TRACK_WIDTH);
 	    this.car = new Car(world, CAR_WIDTH, CAR_LENGTH,
 	    		new Vector2(8, 35), (float) Math.PI, POWER, STEERANGLE, MAXSPEED);
 	    

@@ -15,7 +15,7 @@ public class TrackLoader {
 	
 	public TrackLoader(String map, World world, float TRACK_WIDTH) {
 	    // 0. Create a loader for the file saved from the editor.
-	    BodyEditorLoader loader = new BodyEditorLoader(Gdx.files.internal("data/MapLoader.json"));
+	    BodyEditorLoader loader = new BodyEditorLoader(Gdx.files.internal("data/tracker.json"));
 	 
 	    // 1. Create a BodyDef, as usual.
 	    BodyDef bd = new BodyDef();
