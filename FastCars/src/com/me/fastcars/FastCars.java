@@ -54,9 +54,10 @@ public class FastCars implements ApplicationListener {
 	private String trackName; 
 	private Sprite mapSprite;
 	
+	private boolean twoPlayers = true;
 	
 	public Car car;
-	
+	public Car car2;	
 	
 	@Override
 	public void create() {		
@@ -85,11 +86,15 @@ public class FastCars implements ApplicationListener {
 		batch = new SpriteBatch();
 		
 		
-		
+		//Creates first car
 	    this.car = new Car(world, CAR_WIDTH, CAR_LENGTH,
 	    		new Vector2(8, 35), (float) Math.PI, POWER, STEERANGLE, MAXSPEED);
 	    
-		
+	    //Creates a 2nd car if two players are available.
+	    if(twoPlayers)
+	    {this.car2 = new Car(world, CAR_WIDTH, CAR_LENGTH,
+	    		new Vector2(11, 35), (float) Math.PI, POWER, STEERANGLE, MAXSPEED);}
+	 
 	    debugRenderer = new Box2DDebugRenderer();
 	    
 	}
@@ -102,7 +107,16 @@ public class FastCars implements ApplicationListener {
 
 		carSprite = new Sprite(carTexture);
 		carSprite.setSize(PIXELS_PER_METER*CAR_WIDTH, PIXELS_PER_METER*CAR_WIDTH  * carSprite.getHeight()/ carSprite.getWidth());
+		
+		if(twoPlayers)
+		{
+			carTexture = new Texture(Gdx.files.internal("data/gfx/CarGreen.png"));
+			carTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
+			car2Sprite = new Sprite(carTexture);
+			car2Sprite.setSize(PIXELS_PER_METER*CAR_WIDTH, PIXELS_PER_METER*CAR_WIDTH  * car2Sprite.getHeight()/ car2Sprite.getWidth());
+			
+		}		
 		mapSprite = track.createSprite();
 		mapSprite.setSize(PIXELS_PER_METER*TRACK_WIDTH, PIXELS_PER_METER*TRACK_WIDTH  * mapSprite.getHeight()/ mapSprite.getWidth());
 		mapSprite.setPosition(0, 0);
@@ -127,6 +141,7 @@ public class FastCars implements ApplicationListener {
 		camera.update();
 
 		
+//		Keys for player one.
 		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_UP))
 			car.accelerate = FastCars.ACC_ACCELERATE;
 		else if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN))
@@ -140,9 +155,38 @@ public class FastCars implements ApplicationListener {
 			car.steer = FastCars.STEER_RIGHT;
 		else
 			car.steer = FastCars.STEER_NONE;
-		
+
 		car.update(Gdx.app.getGraphics().getDeltaTime());
-	
+
+		
+//		Keys and update for 2nd car.
+		if(twoPlayers)
+		{
+			if (Gdx.input.isKeyPressed(Input.Keys.W))
+				car2.accelerate = FastCars.ACC_ACCELERATE;
+			else if (Gdx.input.isKeyPressed(Input.Keys.S))
+				car2.accelerate = FastCars.ACC_BRAKE;
+			else
+				car2.accelerate = FastCars.ACC_NONE;
+			
+			if (Gdx.input.isKeyPressed(Input.Keys.A))
+				car2.steer = FastCars.STEER_LEFT;
+			else if (Gdx.input.isKeyPressed(Input.Keys.D))
+				car2.steer = FastCars.STEER_RIGHT;
+			else
+				car2.steer = FastCars.STEER_NONE;
+
+			car2.update(Gdx.app.getGraphics().getDeltaTime());
+			
+			Vector2 car2Position = car2.getPosition();
+
+			
+			car2Sprite.setPosition((car2Position.x*PIXELS_PER_METER) - carSprite.getWidth()/2, (car2Position.y*PIXELS_PER_METER) - car2Sprite.getHeight()/2);
+			car2Sprite.setOrigin(car2Sprite.getWidth()/2, car2Sprite.getHeight()/2);
+			car2Sprite.setRotation(car2.getAngle() * MathUtils.radiansToDegrees -180);
+
+			
+		}
 		Vector2 carPosition = car.getPosition();
 		Vector2 carModelorigin = car.getBodyOrigin();
 		
@@ -153,9 +197,12 @@ public class FastCars implements ApplicationListener {
 		carSprite.setOrigin(carSprite.getWidth()/2, carSprite.getHeight()/2);
 		carSprite.setRotation(car.getAngle() * MathUtils.radiansToDegrees -180);
 	
+		
 		batch.begin();
 		mapSprite.draw(batch);
 		carSprite.draw(batch);
+		if(twoPlayers)
+			car2Sprite.draw(batch);
 		batch.end();
 
 		
