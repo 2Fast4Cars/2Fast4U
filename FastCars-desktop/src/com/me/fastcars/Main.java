@@ -11,7 +11,7 @@ public class Main {
 		cfg.width = 1000;
 		cfg.height = 600;
 		
-		new LwjglApplication(new FastCars(), cfg);
+		new LwjglApplication(new GameScreen(), cfg);
 	}
 }
 
