@@ -1,8 +1,11 @@
 package com.me.fastcars;
 
+import java.awt.Point;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,7 +13,10 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -48,14 +54,17 @@ public class GameScreen implements Screen {
 	private static float TRACK_WIDTH = 100;
 	
 	private TrackLoader track; 
-	private String trackName; 
+	private String trackName;
+	private Rectangle finishLine;
+	private Rectangle checkPoint1;
 	private Sprite mapSprite;
+
 	
 	private BitmapFont font;
 	private long startTime;
 	
 	private boolean twoPlayers = true;
-	
+	private ShapeRenderer sr = new ShapeRenderer();
 	
 	public Car car;
 	public Car car2;	
@@ -147,8 +156,31 @@ public class GameScreen implements Screen {
 		camera.combined.setToOrtho2D(0, 0, screenWidth, screenHeight);
 //		debugRenderer.render(world, camera.combined.scale(PIXELS_PER_METER,PIXELS_PER_METER,PIXELS_PER_METER));
 
+		sr.begin(ShapeType.FilledRectangle);
+		sr.setColor(Color.RED);
+		sr.filledRect(315, 248, 116, 2);
+		sr.end();
 		
+		System.out.println(car.getLap());
+		
+		if(finishLine.contains(carSprite.getX(), carSprite.getY()))
+		{
+			if(car.getPassedCheckPoints()){
+				car.setLap(car.getLap()+1);	
+				car.resetCheckPoints();
 		}
+		}
+			
+		if(checkPoint1.contains(carSprite.getX(), carSprite.getY()))
+		{
+			car.setPassedCheckPoint(true, 0);
+		}
+			
+
+		}
+		
+		
+
 
 	private void createSprites() {
 		
@@ -171,6 +203,8 @@ public class GameScreen implements Screen {
 		mapSprite.setSize(PIXELS_PER_METER*TRACK_WIDTH, PIXELS_PER_METER*TRACK_WIDTH  * mapSprite.getHeight()/ mapSprite.getWidth());
 		mapSprite.setPosition(0, 0);
 		
+		finishLine = new Rectangle(35, 348, 80, 5);
+		checkPoint1 = new Rectangle(315, 248, 116, 2);
 	}
 
 

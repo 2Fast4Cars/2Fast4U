@@ -21,6 +21,8 @@ public class Car {
 	public Vector2 position;
 	public List<Wheel> wheels;
 	private Vector2 bottleModelOrigin;
+	private int currentLap;
+	private boolean[] passedCheckPoint;
 
 	public Car(World world, float width, float length, Vector2 position,
 			float angle, float power, float maxSteerAngle, float maxSpeed) {
@@ -36,7 +38,11 @@ public class Car {
 		this.power = power;
 		this.position = position;
 		this.wheelAngle = 0;
-
+		this.currentLap = 1;
+		this.passedCheckPoint = new boolean[1];
+		
+		for(int i = 0;i<passedCheckPoint.length;i++)
+			passedCheckPoint[i] = false;
 
 		BodyEditorLoader loader = new BodyEditorLoader(
 				Gdx.files.internal("data/RedCar.json"));
@@ -80,6 +86,32 @@ public class Car {
 		
 	}
 
+	public void resetCheckPoints(){
+		for(int i = 0;i<passedCheckPoint.length;i++)
+			passedCheckPoint[i] = false;
+	}
+	
+	public boolean getPassedCheckPoints(){
+		boolean checkPointsPassed = true;
+		for(int i = 0;i<passedCheckPoint.length;i++)
+		{
+			if(passedCheckPoint[i] == false)
+			{
+				checkPointsPassed = false;
+				break;
+			}
+		}
+		
+		return checkPointsPassed;
+		
+	
+	}
+	public void setPassedCheckPoint(boolean checkpoint, int index){this.passedCheckPoint[index] = checkpoint;}
+	public void setLap(int lap){this.currentLap = lap;}
+	
+	public int getLap()
+	{return this.currentLap;}
+	
 	public List<Wheel> getPoweredWheels() {
 		List<Wheel> poweredWheels = new ArrayList<Wheel>();
 		for (Wheel wheel : this.wheels) {
