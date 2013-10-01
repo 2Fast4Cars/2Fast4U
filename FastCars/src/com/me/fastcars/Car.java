@@ -242,7 +242,7 @@ public class Car {
 					forceVector.x, forceVector.y)), position);
 		}
 
-		System.out.println("Car Speed: " + this.getSpeedKMH() + " and pos: " + body.getWorldPoint(body.getPosition()));
+//		System.out.println("Car Speed: " + this.getSpeedKMH() + " and pos: " + body.getWorldPoint(body.getPosition()));
 		// if going very slow, stop - to prevent endless sliding
 
 	}
