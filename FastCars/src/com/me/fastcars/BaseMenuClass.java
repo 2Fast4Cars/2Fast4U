@@ -13,32 +13,28 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-public class MenuScene extends Game implements Screen {
-	private OrthographicCamera camera;
-	private SpriteBatch batch;
-	private Texture texture;
-	private TextureAtlas atlas; 
-	private Sprite sprite;
-	private Stage stage;
-	private Table table;
-	private TextButton buttonExit, buttonPlay, buttonSettings, buttonAbout;
-	private Skin skin;
-	private Music music;
-	private FastCars fastCar;
-	
-	
-	public MenuScene(FastCars fastCar){
+public class BaseMenuClass extends Game implements Screen {
+	protected OrthographicCamera camera;
+	protected SpriteBatch batch;
+	protected Texture texture;
+	protected TextureAtlas atlas; 
+	protected Sprite sprite;
+	protected Stage stage;
+	protected Table table;
+	protected Skin skin;
+	protected Music music;
+	protected FastCars fastCar;
+	protected TextButtonStyle textButtonStyle;
+
+	public BaseMenuClass(FastCars fastCar){
 		this.fastCar = fastCar;
 	}
+	
 	//Create and show the backgroundImage // Buttons
 	@Override
 	public void show() {
@@ -57,14 +53,13 @@ public class MenuScene extends Game implements Screen {
 		table.setVisible(true);
 		table.setBounds(40, 135, 260, 350);
 		
-
 		
-		TextButtonStyle textButtonStyle = new TextButtonStyle();
+		textButtonStyle = new TextButtonStyle();
 		textButtonStyle.up = skin.getDrawable("button.Up");
 		textButtonStyle.down = skin.getDrawable("button.down");
 		textButtonStyle.pressedOffsetX = 1;
 		textButtonStyle.pressedOffsetY = -1;
-		textButtonStyle.fontColor = Color.BLACK;
+		textButtonStyle.fontColor = Color.WHITE;
 		textButtonStyle.font = skin.getFont("default");
 		skin.add("default", textButtonStyle);
 	
@@ -85,97 +80,16 @@ public class MenuScene extends Game implements Screen {
 			
 		// Set Background Music.
 				
-		music = Gdx.audio.newMusic(Gdx.files.internal("data/gfx/getLOW.mp3"));			
-			
-		
-		// creating buttons
-			
-			
-				//PLAY
-				TextButton buttonPlay = new TextButton("PLAY", textButtonStyle);
-				buttonPlay.addListener(new ClickListener() {
-		
-				@Override
-				public void clicked(InputEvent event, float x, float y) {
-							fastCar.setScene(new GameScreen());
-							dispose();
-							
-					}
-				});
-				buttonPlay.pad(15);
-		
-				
-				//SETTINGS
-				TextButton buttonSettings = new TextButton("SETTINGS", textButtonStyle);
-				buttonSettings.addListener(new ClickListener() {
-		
-					@Override
-					public void clicked(InputEvent event, float x, float y) {
-					
-							setScreen(new Settings());
-							
-					}
-				});
-				buttonSettings.pad(15);
-		
-		
-				//ABOUT
-				TextButton buttonAbout = new TextButton("ABOUT", textButtonStyle);
-				buttonAbout.addListener(new ClickListener() {
-		
-					@Override
-					public void clicked(InputEvent event, float x, float y) {
-					
-								setScreen(new About());
-						
-					}
-				});
-				buttonAbout.pad(15);
 
-				
-				
-				//EXIT
-				buttonExit = new TextButton("EXIT", textButtonStyle);
-				buttonExit.addListener(new ClickListener() {
-				
-					@Override
-					public void clicked(InputEvent event, float x, float y) {
-						Gdx.app.exit();
-																		
-					}
-				});
-				
-				buttonExit.pad(15);
-		
-				
-				// putting stuff together
-				table.add(buttonPlay).size(150, 50);
-				table.getCell(buttonPlay).spaceBottom(15);
-				table.row();
-				table.add(buttonSettings).size(150, 50);
-				table.getCell(buttonSettings).spaceBottom(15);
-				table.row();
-				table.add(buttonAbout).size(150, 50);
-				table.getCell(buttonAbout).spaceBottom(15);
-				table.row();
-				table.add(buttonExit).size(150, 50);
-				
-				
-				
-				table.debug();
-				stage.addActor(table);
-				
-				music.play();
-				music.setLooping(true);
 	}
 	
 	@Override
 	public void dispose() {
 		batch.dispose();
 		texture.dispose();
-		music.dispose();
 		
 	}
+	
 		
 	@Override
 	public void render(float delta) {
@@ -229,6 +143,17 @@ public class MenuScene extends Game implements Screen {
 		// TODO Auto-generated method stub
 		
 	}
+
+	
+	public void startMusic(){
+			
+		music = Gdx.audio.newMusic(Gdx.files.internal("data/gfx/getLOW.mp3"));			
+		
+		music.play();
+		music.setLooping(true);
+		
+		}
+		
 
 
 
