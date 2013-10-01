@@ -71,67 +71,116 @@ public class GameScreen implements Screen {
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		Gdx.gl.glViewport(0, 0, 500, 600);
-
-		Vector2 carPosition1 = car.getPosition();
-		
-		camera.update();
-		camera.setToOrtho(false, 500, 600);
-		camera.update();
-		camera.position.set(((carPosition1.x * PIXELS_PER_METER) - carSprite.getWidth() / 2),((carPosition1.y * PIXELS_PER_METER) - carSprite.getHeight() / 2), 0);
-		camera.update();
-
-		batch.setProjectionMatrix(camera.combined);
 
 		
-		updateCar1();
-
-		
-		Gdx.gl.glViewport(500, 0, 500, 600);
-
-		Vector2 carPosition2 = car2.getPosition();
-		
-		camera.update();
-		camera.setToOrtho(false, 500, 600);
-		camera.update();
-		camera.position.set(((carPosition2.x * PIXELS_PER_METER) - carSprite.getWidth() / 2),((carPosition2.y * PIXELS_PER_METER) - carSprite.getHeight() / 2), 0);
-		camera.update();
-		
-		batch.setProjectionMatrix(camera.combined);
-
-
-		updateCar2();
+		renderFirstCar();
+		renderSecondCar();
 
 		world.step(Gdx.app.getGraphics().getDeltaTime(), 3, 3);
 		world.clearForces();
-		
-		updateCarLaps();
 
-		
+		updateCarLaps();
+		drawTimerInfo();
+
 	}
 
-	private void drawInfoToScreen() {
+	private void renderFirstCar() {
+		Gdx.gl.glViewport(0, 0, 500, 600);
+		Vector2 carPosition1 = car.getPosition();
 
-		CharSequence timeString = this
-				.formatTime((System.currentTimeMillis() - startTime));
-		CharSequence currentLapCar1 = String.format("Player 1: %d/3",
-				car.getLap());
-		CharSequence currentLapCar2 = String.format("Player 2: %d/3",
-				car2.getLap());
-		
+		camera.update();
+		camera.setToOrtho(false, 500, 600);
+		camera.update();
+		camera.position
+				.set(((carPosition1.x * PIXELS_PER_METER) - carSprite
+						.getWidth() / 2),
+						((carPosition1.y * PIXELS_PER_METER) - carSprite
+								.getHeight() / 2), 0);
+		camera.update();
+
+		batch.setProjectionMatrix(camera.combined);
+
+		updateCar1();
+
+		batch.begin();
+		mapSprite.draw(batch);
+		carSprite.draw(batch);
+		car2Sprite.draw(batch);
+		batch.end();
+
+	}
+
+	private void renderSecondCar() {
+		Gdx.gl.glViewport(500, 0, 500, 600);
+
+		Vector2 carPosition2 = car2.getPosition();
+
+		camera.update();
+		camera.setToOrtho(false, 500, 600);
+		camera.update();
+		camera.position
+				.set(((carPosition2.x * PIXELS_PER_METER) - carSprite
+						.getWidth() / 2),
+						((carPosition2.y * PIXELS_PER_METER) - carSprite
+								.getHeight() / 2), 0);
+		camera.update();
+
+		batch.setProjectionMatrix(camera.combined);
+
+		updateCar2();
+
 		batch.begin();
 		mapSprite.draw(batch);
 		carSprite.draw(batch);
 		if (twoPlayers)
 			car2Sprite.draw(batch);
 
-		timerFont.setColor(0, 0, 0, 1);
-		timerFont.draw(batch, timeString, 460, 580);
-
-		lapFont.setColor(0, 0, 0, 1);
-		lapFont.draw(batch, currentLapCar1, 460, 560);
-		lapFont.draw(batch, currentLapCar2, 460, 540);
 		batch.end();
+
+	}
+
+	private void drawTimerInfo(){
+
+		Gdx.gl.glViewport(0, 0, 1000, 600);
+
+		Vector2 carPosition = car.getPosition();
+
+		camera.update();
+		camera.setToOrtho(false, 1000, 600);
+		camera.update();
+		camera.position
+				.set(((carPosition.x * PIXELS_PER_METER) - carSprite
+						.getWidth() / 2),
+						((carPosition.y * PIXELS_PER_METER) - carSprite
+								.getHeight() / 2), 0);
+		camera.update();
+
+		batch.setProjectionMatrix(camera.combined);
+
+
+		
+		CharSequence timeString = this
+				.formatTime((System.currentTimeMillis() - startTime));
+
+		batch.begin();
+		timerFont.setColor(1, 0, 0, 1);
+		timerFont.draw(batch, timeString,camera.position.x-25, camera.position.y+290);
+		batch.end();
+	}
+	
+	private void drawInfoToScreen() {
+
+//		CharSequence currentLapCar1 = String.format("Player 1: %d/3",
+//				car.getLap());
+//		CharSequence currentLapCar2 = String.format("Player 2: %d/3",
+//				car2.getLap());
+
+
+
+//		lapFont.setColor(0, 0, 0, 1);
+
+		//		lapFont.draw(batch, currentLapCar1, 460, 560);
+//		lapFont.draw(batch, currentLapCar2, 460, 540);
 
 	}
 
@@ -156,8 +205,6 @@ public class GameScreen implements Screen {
 			car.steer = GameScreen.STEER_NONE;
 
 		car.update(Gdx.app.getGraphics().getDeltaTime());
-		
-
 
 		carSprite.setPosition(
 				(carPosition.x * PIXELS_PER_METER) - carSprite.getWidth() / 2,
@@ -167,25 +214,16 @@ public class GameScreen implements Screen {
 		carSprite
 				.setRotation(car.getAngle() * MathUtils.radiansToDegrees - 180);
 
-
-		batch.begin();
-		mapSprite.draw(batch);
-		carSprite.draw(batch);
-		car2Sprite.draw(batch);
-		batch.end();
-
-		
-
 	}
 
-	private void updateCar2(){
-		
+	private void updateCar2() {
+
 		// Keys and update for 2nd car.
 		if (twoPlayers) {
 			if (Gdx.input.isKeyPressed(Input.Keys.DPAD_UP)) {
 				car2.accelerate = GameScreen.ACC_ACCELERATE;
-//				if (!carSound.isPlaying())
-//					carSound.play();
+				// if (!carSound.isPlaying())
+				// carSound.play();
 			} else if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN)) {
 				car2.accelerate = GameScreen.ACC_BRAKE;
 			} else {
@@ -212,22 +250,11 @@ public class GameScreen implements Screen {
 					car2Sprite.getHeight() / 2);
 			car2Sprite.setRotation(car2.getAngle() * MathUtils.radiansToDegrees
 					- 180);
-			
-			
-
 
 		}
 
-		batch.begin();
-		mapSprite.draw(batch);
-		carSprite.draw(batch);
-		if (twoPlayers)
-			car2Sprite.draw(batch);
-
-		batch.end();
-		
 	}
-	
+
 	// Checks and updates the laps for the cars.
 	private void updateCarLaps() {
 
@@ -269,7 +296,6 @@ public class GameScreen implements Screen {
 		carSprite = new Sprite(carTexture);
 		carSprite.setSize(PIXELS_PER_METER * CAR_WIDTH, PIXELS_PER_METER
 				* CAR_WIDTH * carSprite.getHeight() / carSprite.getWidth());
-		
 
 		if (twoPlayers) {
 			carTexture = new Texture(
@@ -322,15 +348,15 @@ public class GameScreen implements Screen {
 	public void show() {
 
 		this.trackName = "bana1";
-//
-//		carSound = Gdx.audio.newMusic(Gdx.files
-//				.internal("data/gfx/CarSound.mp3"));
+		//
+		// carSound = Gdx.audio.newMusic(Gdx.files
+		// .internal("data/gfx/CarSound.mp3"));
 
 		bgMusic = Gdx.audio.newMusic(Gdx.files.internal("data/gfx/Storm.mp3"));
-		
+
 		bgMusic.play();
 		bgMusic.setVolume(0.5f);
-		
+
 		timerFont = new BitmapFont();
 		lapFont = new BitmapFont();
 
