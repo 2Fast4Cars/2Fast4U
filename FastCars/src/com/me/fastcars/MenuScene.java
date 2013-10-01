@@ -33,8 +33,12 @@ public class MenuScene extends Game implements Screen {
 	private TextButton buttonExit, buttonPlay, buttonSettings, buttonAbout;
 	private Skin skin;
 	private Music music;
+	private FastCars fastCar;
 	
 	
+	public MenuScene(FastCars fastCar){
+		this.fastCar = fastCar;
+	}
 	//Create and show the backgroundImage // Buttons
 	@Override
 	public void show() {
@@ -43,18 +47,15 @@ public class MenuScene extends Game implements Screen {
 		
 		Gdx.input.setInputProcessor(stage);	
 		
-		
-		
 		atlas = new TextureAtlas("ui/button.pack");
-		
-		
+				
 		skin = new Skin(atlas);
 		skin.add("default", new BitmapFont());
 		
 		
 		table = new Table(skin);
 		table.setVisible(true);
-		table.setBounds(0, 0, 50, 50);
+		table.setBounds(40, 135, 260, 350);
 		
 
 		
@@ -91,44 +92,45 @@ public class MenuScene extends Game implements Screen {
 			
 			
 				//PLAY
-//				TextButton buttonPlay = new TextButton("PLAY", textButtonStyle);
-//				buttonPlay.addListener(new ClickListener() {
-//		
-//				@Override
-//				public void clicked(InputEvent event, float x, float y) {
-//						 ((Game) Gdx.app).getApplicationListener()).setScreen(new LevelMenu());
-//							
-//					}
-//				});
-//				buttonPlay.pad(15);
-//		
-//				
-//				//SETTINGS
-//				TextButton buttonSettings = new TextButton("SETTINGS", textButtonStyle);
-//				buttonSettings.addListener(new ClickListener() {
-//		
-//					@Override
-//					public void clicked(InputEvent event, float x, float y) {
-//					
-//								((Game) Gdx.app.getApplicationListener()).setScreen(new Settings());
-//						
-//					}
-//				});
-//				buttonSettings.pad(15);
+				TextButton buttonPlay = new TextButton("PLAY", textButtonStyle);
+				buttonPlay.addListener(new ClickListener() {
+		
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+							fastCar.setScene(new GameScreen());
+							dispose();
+							
+					}
+				});
+				buttonPlay.pad(15);
+		
+				
+				//SETTINGS
+				TextButton buttonSettings = new TextButton("SETTINGS", textButtonStyle);
+				buttonSettings.addListener(new ClickListener() {
+		
+					@Override
+					public void clicked(InputEvent event, float x, float y) {
+					
+							setScreen(new Settings());
+							
+					}
+				});
+				buttonSettings.pad(15);
 		
 		
 				//ABOUT
-//				TextButton buttonAbout = new TextButton("ABOUT", textButtonStyle);
-//				buttonAbout.addListener(new ClickListener() {
-//		
-//					@Override
-//					public void clicked(InputEvent event, float x, float y) {
-//					
-//								((Game) Gdx.app.getApplicationListener()).setScreen(new About());
-//						
-//					}
-//				});
-//				buttonAbout.pad(15);
+				TextButton buttonAbout = new TextButton("ABOUT", textButtonStyle);
+				buttonAbout.addListener(new ClickListener() {
+		
+					@Override
+					public void clicked(InputEvent event, float x, float y) {
+					
+								setScreen(new About());
+						
+					}
+				});
+				buttonAbout.pad(15);
 
 				
 				
@@ -147,7 +149,19 @@ public class MenuScene extends Game implements Screen {
 		
 				
 				// putting stuff together
+				table.add(buttonPlay).size(150, 50);
+				table.getCell(buttonPlay).spaceBottom(15);
+				table.row();
+				table.add(buttonSettings).size(150, 50);
+				table.getCell(buttonSettings).spaceBottom(15);
+				table.row();
+				table.add(buttonAbout).size(150, 50);
+				table.getCell(buttonAbout).spaceBottom(15);
+				table.row();
 				table.add(buttonExit).size(150, 50);
+				
+				
+				
 				table.debug();
 				stage.addActor(table);
 				
@@ -160,6 +174,7 @@ public class MenuScene extends Game implements Screen {
 		batch.dispose();
 		texture.dispose();
 		music.dispose();
+		
 	}
 		
 	@Override
