@@ -1,11 +1,9 @@
 package com.me.fastcars;
 
-import java.awt.Point;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,7 +12,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -35,7 +32,7 @@ public class GameScreen implements Screen {
 	private int screenHeight;
 	private float worldWidth;
 	private float worldHeight;
-	private static int PIXELS_PER_METER = 10; // how many pixels in a meter
+	private static int PIXELS_PER_METER = 20; // how many pixels in a meter
 
 	public static final int STEER_NONE = 0;
 	public static final int STEER_RIGHT = 1;
@@ -64,41 +61,56 @@ public class GameScreen implements Screen {
 	private long startTime;
 
 	private boolean twoPlayers = true;
-	private ShapeRenderer sr = new ShapeRenderer();
+	private Music carSound;
+	private Music bgMusic;
 
 	public Car car;
 	public Car car2;
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(1, 1, 1, 1);
+		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		Gdx.gl.glViewport(0, 0, 500, 600);
 
-		// camera.combined.scale(PIXELS_PER_METER, PIXELS_PER_METER,
-		// PIXELS_PER_METER);
+		Vector2 carPosition1 = car.getPosition();
+		
+		camera.update();
+		camera.setToOrtho(false, 500, 600);
+		camera.update();
+		camera.position.set(((carPosition1.x * PIXELS_PER_METER) - carSprite.getWidth() / 2),((carPosition1.y * PIXELS_PER_METER) - carSprite.getHeight() / 2), 0);
 		camera.update();
 
+		batch.setProjectionMatrix(camera.combined);
 
-		updateCars();
-		drawToScreen();
+		
+		updateCar1();
+
+		
+		Gdx.gl.glViewport(500, 0, 500, 600);
+
+		Vector2 carPosition2 = car2.getPosition();
+		
+		camera.update();
+		camera.setToOrtho(false, 500, 600);
+		camera.update();
+		camera.position.set(((carPosition2.x * PIXELS_PER_METER) - carSprite.getWidth() / 2),((carPosition2.y * PIXELS_PER_METER) - carSprite.getHeight() / 2), 0);
+		camera.update();
+		
+		batch.setProjectionMatrix(camera.combined);
 
 
+		updateCar2();
 
 		world.step(Gdx.app.getGraphics().getDeltaTime(), 3, 3);
-
 		world.clearForces();
-
-		camera.setToOrtho(false, 1000, 600);
-		camera.combined.setToOrtho2D(0, 0, screenWidth, screenHeight);
-//		 debugRenderer.render(world,
-//		 camera.combined.scale(PIXELS_PER_METER,PIXELS_PER_METER,PIXELS_PER_METER));
-
-
+		
 		updateCarLaps();
 
+		
 	}
 
-	private void drawToScreen() {
+	private void drawInfoToScreen() {
 
 		CharSequence timeString = this
 				.formatTime((System.currentTimeMillis() - startTime));
@@ -121,29 +133,31 @@ public class GameScreen implements Screen {
 		lapFont.draw(batch, currentLapCar2, 460, 540);
 		batch.end();
 
-		
 	}
 
 	// Updates the keys as well as position/velocity etc for cars.
-	private void updateCars() {
+	private void updateCar1() {
+
 		Vector2 carPosition = car.getPosition();
 
 		// Keys for player one.
-		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_UP))
+		if (Gdx.input.isKeyPressed(Input.Keys.W))
 			car.accelerate = GameScreen.ACC_ACCELERATE;
-		else if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN))
+		else if (Gdx.input.isKeyPressed(Input.Keys.S))
 			car.accelerate = GameScreen.ACC_BRAKE;
 		else
 			car.accelerate = GameScreen.ACC_NONE;
 
-		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT))
+		if (Gdx.input.isKeyPressed(Input.Keys.A))
 			car.steer = GameScreen.STEER_LEFT;
-		else if (Gdx.input.isKeyPressed(Input.Keys.DPAD_RIGHT))
+		else if (Gdx.input.isKeyPressed(Input.Keys.D))
 			car.steer = GameScreen.STEER_RIGHT;
 		else
 			car.steer = GameScreen.STEER_NONE;
 
 		car.update(Gdx.app.getGraphics().getDeltaTime());
+		
+
 
 		carSprite.setPosition(
 				(carPosition.x * PIXELS_PER_METER) - carSprite.getWidth() / 2,
@@ -153,18 +167,34 @@ public class GameScreen implements Screen {
 		carSprite
 				.setRotation(car.getAngle() * MathUtils.radiansToDegrees - 180);
 
+
+		batch.begin();
+		mapSprite.draw(batch);
+		carSprite.draw(batch);
+		car2Sprite.draw(batch);
+		batch.end();
+
+		
+
+	}
+
+	private void updateCar2(){
+		
 		// Keys and update for 2nd car.
 		if (twoPlayers) {
-			if (Gdx.input.isKeyPressed(Input.Keys.W))
+			if (Gdx.input.isKeyPressed(Input.Keys.DPAD_UP)) {
 				car2.accelerate = GameScreen.ACC_ACCELERATE;
-			else if (Gdx.input.isKeyPressed(Input.Keys.S))
+//				if (!carSound.isPlaying())
+//					carSound.play();
+			} else if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN)) {
 				car2.accelerate = GameScreen.ACC_BRAKE;
-			else
+			} else {
 				car2.accelerate = GameScreen.ACC_NONE;
+			}
 
-			if (Gdx.input.isKeyPressed(Input.Keys.A))
+			if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT))
 				car2.steer = GameScreen.STEER_LEFT;
-			else if (Gdx.input.isKeyPressed(Input.Keys.D))
+			else if (Gdx.input.isKeyPressed(Input.Keys.DPAD_RIGHT))
 				car2.steer = GameScreen.STEER_RIGHT;
 			else
 				car2.steer = GameScreen.STEER_NONE;
@@ -182,11 +212,22 @@ public class GameScreen implements Screen {
 					car2Sprite.getHeight() / 2);
 			car2Sprite.setRotation(car2.getAngle() * MathUtils.radiansToDegrees
 					- 180);
+			
+			
+
 
 		}
 
-	}
+		batch.begin();
+		mapSprite.draw(batch);
+		carSprite.draw(batch);
+		if (twoPlayers)
+			car2Sprite.draw(batch);
 
+		batch.end();
+		
+	}
+	
 	// Checks and updates the laps for the cars.
 	private void updateCarLaps() {
 
@@ -228,6 +269,7 @@ public class GameScreen implements Screen {
 		carSprite = new Sprite(carTexture);
 		carSprite.setSize(PIXELS_PER_METER * CAR_WIDTH, PIXELS_PER_METER
 				* CAR_WIDTH * carSprite.getHeight() / carSprite.getWidth());
+		
 
 		if (twoPlayers) {
 			carTexture = new Texture(
@@ -280,7 +322,15 @@ public class GameScreen implements Screen {
 	public void show() {
 
 		this.trackName = "bana1";
+//
+//		carSound = Gdx.audio.newMusic(Gdx.files
+//				.internal("data/gfx/CarSound.mp3"));
 
+		bgMusic = Gdx.audio.newMusic(Gdx.files.internal("data/gfx/Storm.mp3"));
+		
+		bgMusic.play();
+		bgMusic.setVolume(0.5f);
+		
 		timerFont = new BitmapFont();
 		lapFont = new BitmapFont();
 
