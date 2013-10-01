@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -81,10 +83,16 @@ public class GameScreen implements Screen {
 
 		updateCarLaps();
 		drawTimerInfo();
+		
+
 
 	}
 
 	private void renderFirstCar() {
+		
+		CharSequence currentLapCar1 = String.format("Lap: %d/3",
+				car.getLap());
+
 		Gdx.gl.glViewport(0, 0, 500, 600);
 		Vector2 carPosition1 = car.getPosition();
 
@@ -98,6 +106,7 @@ public class GameScreen implements Screen {
 								.getHeight() / 2), 0);
 		camera.update();
 
+		
 		batch.setProjectionMatrix(camera.combined);
 
 		updateCar1();
@@ -106,13 +115,18 @@ public class GameScreen implements Screen {
 		mapSprite.draw(batch);
 		carSprite.draw(batch);
 		car2Sprite.draw(batch);
+		lapFont.setColor(1, 0, 0, 1);
+		lapFont.draw(batch, currentLapCar1, camera.position.x-150, camera.position.y+250);
 		batch.end();
+
 
 	}
 
 	private void renderSecondCar() {
 		Gdx.gl.glViewport(500, 0, 500, 600);
 
+		CharSequence currentLapCar1 = String.format("Lap: %d/3",car2.getLap());
+		
 		Vector2 carPosition2 = car2.getPosition();
 
 		camera.update();
@@ -127,13 +141,15 @@ public class GameScreen implements Screen {
 
 		batch.setProjectionMatrix(camera.combined);
 
+		
 		updateCar2();
 
 		batch.begin();
 		mapSprite.draw(batch);
 		carSprite.draw(batch);
-		if (twoPlayers)
-			car2Sprite.draw(batch);
+		car2Sprite.draw(batch);
+		lapFont.setColor(0, 1, 0, 1);
+		lapFont.draw(batch, currentLapCar1, camera.position.x-150, camera.position.y+250);
 
 		batch.end();
 
@@ -170,16 +186,12 @@ public class GameScreen implements Screen {
 	
 	private void drawInfoToScreen() {
 
-//		CharSequence currentLapCar1 = String.format("Player 1: %d/3",
-//				car.getLap());
-//		CharSequence currentLapCar2 = String.format("Player 2: %d/3",
+
+		//		CharSequence currentLapCar2 = String.format("Player 2: %d/3",
 //				car2.getLap());
 
 
 
-//		lapFont.setColor(0, 0, 0, 1);
-
-		//		lapFont.draw(batch, currentLapCar1, 460, 560);
 //		lapFont.draw(batch, currentLapCar2, 460, 540);
 
 	}
@@ -213,6 +225,8 @@ public class GameScreen implements Screen {
 				.setOrigin(carSprite.getWidth() / 2, carSprite.getHeight() / 2);
 		carSprite
 				.setRotation(car.getAngle() * MathUtils.radiansToDegrees - 180);
+		
+		
 
 	}
 
@@ -258,6 +272,7 @@ public class GameScreen implements Screen {
 	// Checks and updates the laps for the cars.
 	private void updateCarLaps() {
 
+		
 		// Check if the first car have crossed the finish line.
 		if (finishLine.contains(carSprite.getX(), carSprite.getY())) {
 			if (car.getPassedCheckPoints()) {
@@ -313,8 +328,9 @@ public class GameScreen implements Screen {
 				* TRACK_WIDTH * mapSprite.getHeight() / mapSprite.getWidth());
 		mapSprite.setPosition(0, 0);
 
-		finishLine = new Rectangle(35, 348, 80, 5);
-		checkPoint1 = new Rectangle(315, 248, 116, 5);
+		
+		finishLine = new Rectangle(15, 693, 320, 10);
+		checkPoint1 = new Rectangle(600, 515, 320, 10);
 	}
 
 	@Override
@@ -346,6 +362,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void show() {
+		this.sr = new ShapeRenderer();
 
 		this.trackName = "bana1";
 		//
