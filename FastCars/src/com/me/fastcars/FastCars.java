@@ -6,7 +6,7 @@ public class FastCars extends Game {
 	
 	@Override
 	public void create() {		
-		setScreen(new MenuScene());
+		setScreen(new GameScreen());
 	}
 	
 }
