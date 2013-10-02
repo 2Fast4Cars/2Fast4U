@@ -59,7 +59,8 @@ public class GameScreen implements Screen {
 	private Sprite mapSprite;
 
 	private BitmapFont timerFont;
-	private BitmapFont lapFont;
+	private BitmapFont lapFontRed;
+	private BitmapFont lapFontGreen;
 	private long startTime;
 
 	private boolean twoPlayers = true;
@@ -115,8 +116,8 @@ public class GameScreen implements Screen {
 		mapSprite.draw(batch);
 		carSprite.draw(batch);
 		car2Sprite.draw(batch);
-		lapFont.setColor(1, 0, 0, 1);
-		lapFont.draw(batch, currentLapCar1, camera.position.x-150, camera.position.y+250);
+		lapFontRed.setColor(1, 0, 0, 1);
+		lapFontRed.draw(batch, currentLapCar1, camera.position.x-200, camera.position.y+270);
 		batch.end();
 
 
@@ -148,8 +149,7 @@ public class GameScreen implements Screen {
 		mapSprite.draw(batch);
 		carSprite.draw(batch);
 		car2Sprite.draw(batch);
-		lapFont.setColor(0, 1, 0, 1);
-		lapFont.draw(batch, currentLapCar1, camera.position.x-150, camera.position.y+250);
+		lapFontGreen.draw(batch, currentLapCar1, camera.position.x-200, camera.position.y+270);
 
 		batch.end();
 
@@ -179,8 +179,7 @@ public class GameScreen implements Screen {
 				.formatTime((System.currentTimeMillis() - startTime));
 
 		batch.begin();
-		timerFont.setColor(1, 0, 0, 1);
-		timerFont.draw(batch, timeString,camera.position.x-25, camera.position.y+290);
+		timerFont.draw(batch, timeString,camera.position.x-50, camera.position.y+290);
 		batch.end();
 	}
 	
@@ -362,7 +361,6 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void show() {
-		this.sr = new ShapeRenderer();
 
 		this.trackName = "bana1";
 		//
@@ -374,11 +372,12 @@ public class GameScreen implements Screen {
 		bgMusic.play();
 		bgMusic.setVolume(0.5f);
 
-		timerFont = new BitmapFont();
-		lapFont = new BitmapFont();
+		timerFont = new BitmapFont(Gdx.files.internal("ui/fonts/impact25white.fnt"), Gdx.files.internal("ui/fonts/impact25white.png"), false);
+		lapFontRed = new BitmapFont(Gdx.files.internal("ui/fonts/impact40red.fnt"), Gdx.files.internal("ui/fonts/impact40red.png"), false);
+		lapFontGreen = new BitmapFont(Gdx.files.internal("ui/fonts/impact40green.fnt"), Gdx.files.internal("ui/fonts/impact40green.png"), false);
 
 		startTime = System.currentTimeMillis();
-
+		
 		screenWidth = Gdx.graphics.getWidth();
 		screenHeight = Gdx.graphics.getHeight();
 		worldWidth = screenWidth / PIXELS_PER_METER;
