@@ -59,6 +59,7 @@ public class GameScreen implements Screen {
 	private Sprite mapSprite;
 
 	private BitmapFont timerFont;
+	private float timerFontWidth;
 	private BitmapFont lapFontRed;
 	private BitmapFont lapFontGreen;
 	private long startTime;
@@ -94,11 +95,11 @@ public class GameScreen implements Screen {
 		CharSequence currentLapCar1 = String.format("Lap: %d/3",
 				car.getLap());
 
-		Gdx.gl.glViewport(0, 0, 500, 600);
+		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
 		Vector2 carPosition1 = car.getPosition();
 
 		camera.update();
-		camera.setToOrtho(false, 500, 600);
+		camera.setToOrtho(false, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
 		camera.update();
 		camera.position
 				.set(((carPosition1.x * PIXELS_PER_METER) - carSprite
@@ -124,14 +125,14 @@ public class GameScreen implements Screen {
 	}
 
 	private void renderSecondCar() {
-		Gdx.gl.glViewport(500, 0, 500, 600);
+		Gdx.gl.glViewport(Gdx.graphics.getWidth()/2, 0, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
 
 		CharSequence currentLapCar1 = String.format("Lap: %d/3",car2.getLap());
 		
 		Vector2 carPosition2 = car2.getPosition();
 
 		camera.update();
-		camera.setToOrtho(false, 500, 600);
+		camera.setToOrtho(false, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight());
 		camera.update();
 		camera.position
 				.set(((carPosition2.x * PIXELS_PER_METER) - carSprite
@@ -157,45 +158,40 @@ public class GameScreen implements Screen {
 
 	private void drawTimerInfo(){
 
-		Gdx.gl.glViewport(0, 0, 1000, 600);
+		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 		Vector2 carPosition = car.getPosition();
 
 		camera.update();
-		camera.setToOrtho(false, 1000, 600);
+		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		camera.update();
-		camera.position
-				.set(((carPosition.x * PIXELS_PER_METER) - carSprite
-						.getWidth() / 2),
-						((carPosition.y * PIXELS_PER_METER) - carSprite
-								.getHeight() / 2), 0);
+//		camera.position
+//				.set(((carPosition.x * PIXELS_PER_METER) - carSprite
+//						.getWidth() / 2),
+//						((carPosition.y * PIXELS_PER_METER) - carSprite
+//								.getHeight() / 2), 0);
+
+		camera.position.set(0, 0, 0);
 		camera.update();
+		
+		
 
 		batch.setProjectionMatrix(camera.combined);
-
 
 		
 		CharSequence timeString = this
 				.formatTime((System.currentTimeMillis() - startTime));
 
+		System.out.println("Timerfont with exact string: " + timerFont.getBounds(timeString).width);
+		System.out.println("TimerFont with first string: " +  timerFontWidth);
+		
 		batch.begin();
-		timerFont.draw(batch, timeString,camera.position.x-50, camera.position.y+290);
+		timerFont.setColor(1, 1, 1, 1);
+		timerFont.draw(batch, timeString,camera.position.x -(timerFontWidth/2), camera.position.y + (Gdx.graphics.getHeight()*0.45f));
+		
 		batch.end();
 	}
-	
-	private void drawInfoToScreen() {
 
-
-		//		CharSequence currentLapCar2 = String.format("Player 2: %d/3",
-//				car2.getLap());
-
-
-
-//		lapFont.draw(batch, currentLapCar2, 460, 540);
-
-	}
-
-	// Updates the keys as well as position/velocity etc for cars.
 	private void updateCar1() {
 
 		Vector2 carPosition = car.getPosition();
@@ -377,6 +373,10 @@ public class GameScreen implements Screen {
 		lapFontGreen = new BitmapFont(Gdx.files.internal("ui/fonts/impact40green.fnt"), Gdx.files.internal("ui/fonts/impact40green.png"), false);
 
 		startTime = System.currentTimeMillis();
+
+		CharSequence timeString = this.formatTime((System.currentTimeMillis() - startTime));
+		timerFontWidth = timerFont.getBounds(timeString).width;
+
 		
 		screenWidth = Gdx.graphics.getWidth();
 		screenHeight = Gdx.graphics.getHeight();
