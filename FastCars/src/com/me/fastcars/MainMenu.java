@@ -14,9 +14,10 @@ public class MainMenu extends BaseMenuClass implements Screen {
 					   buttonAbout, 
 					   buttonHighScore;
 	
-	public MainMenu(FastCars fastCar) {
+	public MainMenu(FastCars fastCar, boolean playMusic) {
 		super(fastCar);
-		
+		if(playMusic)
+			startMusic();
 	}
 
 	@Override
@@ -35,9 +36,7 @@ public class MainMenu extends BaseMenuClass implements Screen {
 	public void show() {
 		
 		super.show();
-		
-		startMusic();
-		
+
 		// CREATING BUTTONS-------------------------------------
 		
 		// PLAY-------------------------------------------------
@@ -115,21 +114,25 @@ public class MainMenu extends BaseMenuClass implements Screen {
 		
 		// putting stuff together
 		
-		table.add(buttonPlay).size(200, 50);
-		table.getCell(buttonPlay).spaceBottom(15);
-		table.row();
-		table.add(buttonSettings).size(200, 50);
-		table.getCell(buttonSettings).spaceBottom(15);
-		table.row();
-		table.add(buttonAbout).size(200, 50);
-		table.getCell(buttonAbout).spaceBottom(15);
-		table.row();
-		table.add(buttonExit).size(200, 50);
+		tableMenu.add(buttonPlay).size(200, 40);
+		tableMenu.getCell(buttonPlay).spaceBottom(15);
+		tableMenu.row();
+		tableMenu.add(buttonHighScore).size(200, 40);
+		tableMenu.getCell(buttonHighScore).spaceBottom(15);
+		tableMenu.row();
+		tableMenu.add(buttonSettings).size(200, 40);
+		tableMenu.getCell(buttonSettings).spaceBottom(15);
+		tableMenu.row();
+		tableMenu.add(buttonAbout).size(200, 40);
+		tableMenu.getCell(buttonAbout).spaceBottom(15);
+		tableMenu.row();
+		tableMenu.add(buttonExit).size(200, 40);
 		
 		
-		table.debug();
-		stage.addActor(table);
-		
+		tableMenu.debug();
+		tableSUB.debug();
+		stage.addActor(tableMenu);
+		stage.addActor(tableSUB);
 		
 	}
 

@@ -1,0 +1,42 @@
+
+interface.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+MenueBackground1
+  rotate: false
+  xy: 0, 224
+  size: 1000, 600
+  orig: 1000, 600
+  offset: 0, 0
+  index: -1
+button.down
+  rotate: false
+  xy: 0, 112
+  size: 412, 112
+  split: 10, 5, 10, 12
+  orig: 412, 112
+  offset: 0, 0
+  index: -1
+button.Up
+  rotate: false
+  xy: 0, 0
+  size: 412, 112
+  split: 9, 6, 10, 12
+  orig: 412, 112
+  offset: 0, 0
+  index: -1
+button.up.back
+  rotate: false
+  xy: 412, 112
+  size: 144, 112
+  orig: 144, 112
+  offset: 0, 0
+  index: -1
+button.up.down
+  rotate: false
+  xy: 412, 0
+  size: 144, 112
+  orig: 144, 112
+  offset: 0, 0
+  index: -1

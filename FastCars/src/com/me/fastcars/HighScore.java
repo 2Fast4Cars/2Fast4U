@@ -1,17 +1,13 @@
 package com.me.fastcars;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-public class HighScore extends BaseMenuClass implements Screen {
+public class HighScore extends MainMenu implements Screen {
 
-	private TextButton buttonExit;
+	
 	
 	public HighScore(FastCars fastCar) {
-		super(fastCar);
+		super(fastCar, false);
 	}
 
 	@Override
@@ -31,31 +27,8 @@ public class HighScore extends BaseMenuClass implements Screen {
 	public void show() {
 		super.show();
 		
-		
-		// CREATING BUTTONS
-		
-		// EXIT-------------------------------------------------
-		buttonExit = new TextButton("EXIT", textButtonStyle);
-		buttonExit.addListener(new ClickListener() {
-		
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				Gdx.app.exit();
-																	
-			}
-		});
-		
-		buttonExit.pad(15);
-		
-		
-		
-		// putting stuff together
-		
-		table.add(buttonExit).size(200, 50);
-		
-		table.debug();
-		stage.addActor(table);
-		
+		super.subMenu = true; 
+
 	}
 
 	@Override
