@@ -19,6 +19,11 @@ public class MainMenu extends BaseMenuClass implements Screen {
 		if(playMusic)
 			startMusic();
 	}
+	
+	public MainMenu(){
+		super();
+	
+	}
 
 	@Override
 	public void render(float delta) {
@@ -36,7 +41,9 @@ public class MainMenu extends BaseMenuClass implements Screen {
 	public void show() {
 		
 		super.show();
-
+		
+//		new HighScore().saveHighScore("Hejsan", "00:00:00", 1);
+		
 		// CREATING BUTTONS-------------------------------------
 		
 		// PLAY-------------------------------------------------
@@ -47,7 +54,7 @@ public class MainMenu extends BaseMenuClass implements Screen {
 		public void clicked(InputEvent event, float x, float y) {
 					fastCar.setScene(new GameScreen());
 					dispose();
-					
+						
 			}
 		});
 		buttonPlay.pad(15);

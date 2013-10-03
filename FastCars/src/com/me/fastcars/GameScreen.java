@@ -66,7 +66,11 @@ public class GameScreen implements Screen {
 	private BitmapFont lapFontRed;
 	private BitmapFont lapFontGreen;
 	private long startTime;
-
+	private long stopTime;
+	
+	private String nameCar1 = "Player 1";
+	private String nameCar2 = "Player 2";
+	
 	private boolean twoPlayers = true;
 	private boolean finishedCar1;
 	private boolean finishedCar2;
@@ -92,9 +96,7 @@ public class GameScreen implements Screen {
 		world.clearForces();
 		
 		renderFirstCar();
-		debugRenderer.render(world, camera.combined.scale(PIXELS_PER_METER,PIXELS_PER_METER,PIXELS_PER_METER));
 		renderSecondCar();
-		debugRenderer.render(world, camera.combined.scale(PIXELS_PER_METER,PIXELS_PER_METER,PIXELS_PER_METER));
 
 		updateCarLaps();
 		drawTimerInfo();
@@ -115,7 +117,7 @@ public class GameScreen implements Screen {
 				lapFontRed.draw(batch, "Player 1 won!", (camera.position.x - 100),	camera.position.y + 50);
 				break;
 			case 2:
-				lapFontGreen.draw(batch, "Player 2 won!", (camera.position.x ),	camera.position.y);
+				lapFontGreen.draw(batch, "Player 2 won!", (camera.position.x -100 ),	camera.position.y - 50);
 				break;
 			default:
 				break;
@@ -224,8 +226,21 @@ public class GameScreen implements Screen {
 
 		batch.setProjectionMatrix(camera.combined);
 
-		CharSequence timeString = this
-				.formatTime((System.currentTimeMillis() - startTime));
+		CharSequence timeString;
+		
+		if(finishedCar1 && finishedCar2 && stopTime>0)
+		{
+		 timeString = 	this.formatTime(stopTime);
+		}
+		
+		else if(finishedCar1 && finishedCar2 && stopTime == 0)
+		{
+			stopTime = System.currentTimeMillis() - startTime;
+			timeString = this.formatTime(stopTime);
+		}
+
+		else
+			timeString = this.formatTime((System.currentTimeMillis() - startTime));
 
 		batch.begin();
 		timerFont.setColor(1, 1, 1, 1);
@@ -333,10 +348,11 @@ public class GameScreen implements Screen {
 				{
 					if(whoWon == 0)
 						this.whoWon = 1;
-						
+
 					
 					finishedCar1 = true;
 					raceTimeCar1 = System.currentTimeMillis() - startTime;
+					new HighScore().checkIfTimeIsBetter(nameCar1, formatTime(raceTimeCar1));
 					
 				}
 				else {
@@ -360,6 +376,8 @@ public class GameScreen implements Screen {
 					
 					finishedCar2 = true;
 					raceTimeCar2 = System.currentTimeMillis() - startTime;
+					new HighScore().checkIfTimeIsBetter(nameCar2, formatTime(raceTimeCar2));
+
 				}
 	
 				else{
@@ -436,7 +454,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void show() {
-
+		
 		this.trackName = "bana1";
 		//
 		// carSound = Gdx.audio.newMusic(Gdx.files

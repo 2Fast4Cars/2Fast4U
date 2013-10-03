@@ -45,6 +45,7 @@ public class BaseMenuClass extends Game implements Screen {
 		this.fastCar = fastCar;
 	}
 	
+	public BaseMenuClass(){}
 	
 	//Create and show the backgroundImage // Buttons
 	@Override
