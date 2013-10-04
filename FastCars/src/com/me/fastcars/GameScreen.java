@@ -50,8 +50,8 @@ public class GameScreen implements Screen {
 	private static final float CAR_WIDTH = 1;
 	private static final float CAR_LENGTH = 2;
 
-	private static final float MAXSPEED = 70;
-	private static final float POWER = 60;
+	private static final float MAXSPEED = 80;
+	private static final float POWER = 20;
 	private static int STEERANGLE = 35;
 	private static float TRACK_WIDTH = 100;
 
@@ -97,7 +97,7 @@ public class GameScreen implements Screen {
 		
 		renderFirstCar();
 		renderSecondCar();
-
+		
 		updateCarLaps();
 		drawTimerInfo();
 		
@@ -151,7 +151,7 @@ public class GameScreen implements Screen {
 		batch.setProjectionMatrix(camera.combined);
 
 		updateCar1();
-		
+				
 		batch.begin();
 		mapSprite.draw(batch);
 		carSprite.draw(batch);
@@ -159,12 +159,19 @@ public class GameScreen implements Screen {
 		lapFontRed.setColor(1, 0, 0, 1);
 		lapFontRed.draw(batch, currentLapCar1, camera.position.x - 200,
 				camera.position.y + 270);
+		
+		String speed = Integer.toString(Math.round(car.getSpeedKMH())) + " km/h";
+		
+		timerFont.draw(batch, speed, camera.position.x - 220, camera.position.y-250);
+		
 		if (finishedCar1){
 			lapFontRed.draw(batch, "Race Complete!", (camera.position.x - 100),
 					camera.position.y + 100);
 
 			timerFont.draw(batch, formatTime(raceTimeCar1),(camera.position.x - 100),(
 			camera.position.y + 60));
+			
+		
 		}
 		
 		batch.end();
@@ -200,6 +207,11 @@ public class GameScreen implements Screen {
 		car2Sprite.draw(batch);
 		lapFontGreen.draw(batch, currentLapCar2, camera.position.x - 200,
 				camera.position.y + 270);
+		
+		String speed = Integer.toString(Math.round(car2.getSpeedKMH())) + " km/h";
+		timerFont.draw(batch, speed, camera.position.x + 150, camera.position.y-250);
+		
+		
 		if (finishedCar2){
 			lapFontGreen.draw(batch, "Race Complete!", (camera.position.x - 100),
 					camera.position.y + 100);
@@ -422,7 +434,9 @@ public class GameScreen implements Screen {
 
 		finishLine = new Rectangle(15, 693, 320, 10);
 		checkPoint1 = new Rectangle(600, 515, 320, 10);
-	}
+		}
+	
+	
 
 	@Override
 	public void dispose() {
@@ -456,14 +470,14 @@ public class GameScreen implements Screen {
 	public void show() {
 		
 		this.trackName = "bana1";
-		//
-		// carSound = Gdx.audio.newMusic(Gdx.files
-		// .internal("data/gfx/CarSound.mp3"));
+//
+//		carSound = Gdx.audio.newMusic(Gdx.files
+//		 .internal("data/gfx/CarSound.mp3"));
 
-		bgMusic = Gdx.audio.newMusic(Gdx.files.internal("data/gfx/Storm.mp3"));
-
-		bgMusic.play();
-		bgMusic.setVolume(0.5f);
+//		bgMusic = Gdx.audio.newMusic(Gdx.files.internal("data/gfx/Storm.mp3"));
+//
+//		bgMusic.play();
+//		bgMusic.setVolume(0.5f);
 
 		timerFont = new BitmapFont(
 				Gdx.files.internal("ui/fonts/impact25white.fnt"),

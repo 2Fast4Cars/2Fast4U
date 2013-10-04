@@ -182,11 +182,11 @@ public class BaseMenuClass extends Game implements Screen {
 	
 	public void startMusic(){
 			
-		music = Gdx.audio.newMusic(Gdx.files.internal("data/gfx/getLOW.mp3"));			
-		
-		music.play();
-		music.setLooping(true);
-		
+//		music = Gdx.audio.newMusic(Gdx.files.internal("data/gfx/getLOW.mp3"));			
+//		
+//		music.play();
+//		music.setLooping(true);
+//		
 		}
 
 
