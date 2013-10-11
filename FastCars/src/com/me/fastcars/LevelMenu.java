@@ -57,7 +57,7 @@ public class LevelMenu extends MainMenu implements Screen {
 
 		@Override
 		public void clicked(InputEvent event, float x, float y) {
-					fastCar.setScene(new GameScreen());
+					fastCar.setScene(new GameScreen(fastCar));
 					dispose();
 					
 
