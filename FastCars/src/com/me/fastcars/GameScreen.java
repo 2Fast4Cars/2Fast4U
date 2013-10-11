@@ -68,8 +68,8 @@ public class GameScreen implements Screen {
 	private long startTime;
 	private long stopTime;
 
-	private String nameCar1 = "Player 1";
-	private String nameCar2 = "Player 2";
+	private String nameCar1;
+	private String nameCar2;
 
 	private boolean twoPlayers = true;
 	private boolean finishedCar1;
@@ -89,9 +89,11 @@ public class GameScreen implements Screen {
 	public Car car2;
 	
 	
-	public GameScreen(FastCars fastCar, String track){
+	public GameScreen(FastCars fastCar, String track, String name1, String name2){
 	  this.fastCars = fastCar;
 	  this.trackName = track;
+	  this.nameCar1 = name1;
+	  this.nameCar2 = name2;
 	}
 
 	@Override
@@ -121,10 +123,10 @@ public class GameScreen implements Screen {
 			switch(whoWon)
 			{
 			case 1:
-				lapFontRed.draw(batch, "Player 1 won!", (camera.position.x - 100),	camera.position.y + 50);
+				lapFontRed.draw(batch,  nameCar1 + " won!", (camera.position.x - 100),	camera.position.y + 50);
 				break;
 			case 2:
-				lapFontGreen.draw(batch, "Player 2 won!", (camera.position.x -100 ),	camera.position.y - 50);
+				lapFontGreen.draw(batch, nameCar2 + " won!", (camera.position.x -100 ),	camera.position.y - 50);
 				break;
 			default:
 				break;

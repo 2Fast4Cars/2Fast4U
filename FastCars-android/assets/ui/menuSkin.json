@@ -50,5 +50,14 @@
             "vScroll": "backgroundScroll",
             "vScrollKnob": "ScrollKnob"
         }
-    }
+    },
+    
+	"com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle": {
+		"default": { 
+			"font": white, 
+			"fontColor": white, 
+			"messageFontColor": white, 
+			"background": SUBBackground, 
+			 }
+	}
 }
