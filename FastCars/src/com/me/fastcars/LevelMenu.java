@@ -2,6 +2,7 @@ package com.me.fastcars;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -17,11 +18,13 @@ public class LevelMenu extends MainMenu implements Screen {
 	private List list;
 	private ScrollPane scrollPane;
 	private TextButton buttonPlay;
-	
+	protected Music music;
+
 	private String track;
 	
-	public LevelMenu(FastCars fastCar) {
+	public LevelMenu(FastCars fastCar, Music music) {
 		super(fastCar, false);
+		this.music = music;
 	}
 
 	@Override
@@ -60,7 +63,7 @@ public class LevelMenu extends MainMenu implements Screen {
 		
 		
 		// Creating a list for the tracks. 
-		list = new List(new String[] {"Bana1", "Bana2","The 8-track", "Taggarå", "Mantorp Park"}, skin);
+		list = new List(new String[] {"MarioBros", "TheGreenMess"}, skin);
 		
 		// Setting the track to "bana1" as default.
 		track = "bana1";
@@ -81,6 +84,7 @@ public class LevelMenu extends MainMenu implements Screen {
 
 		@Override
 		public void clicked(InputEvent event, float x, float y) {
+				music.stop();
 					fastCar.setScene(new GameScreen(fastCar, list.getSelection().toLowerCase()));
 					dispose();
 					

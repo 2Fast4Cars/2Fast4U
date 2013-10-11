@@ -184,5 +184,4 @@ public class BaseMenuClass extends Game implements Screen {
 			}
 		}
 
-
 }

@@ -46,7 +46,7 @@ public class MainMenu extends BaseMenuClass implements Screen {
 
 		@Override
 		public void clicked(InputEvent event, float x, float y) {
-					fastCar.setScene(new LevelMenu(fastCar));
+					fastCar.setScene(new LevelMenu(fastCar, music));
 					dispose();
 					
 			}
