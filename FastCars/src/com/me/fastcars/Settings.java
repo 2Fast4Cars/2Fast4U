@@ -2,6 +2,7 @@ package com.me.fastcars;
 
 import com.badlogic.gdx.Screen;
 
+
 public class Settings extends MainMenu implements Screen {
 
 
@@ -28,6 +29,20 @@ public class Settings extends MainMenu implements Screen {
 	
 		super.subMenu = true; 
 		
+		
+		// Contacts the "subMenu" in the superClass(BaseMenuClass) and set it to true. 
+			super.subMenu = true;  
+
+		
+		// Putting stuffs together		
+			tableSUB.add("Settings").center();
+			tableSUB.add().width(tableSUB.getWidth() / 2 );
+			tableSUB.add().expandX().width(tableSUB.getWidth() / 2 ).row();
+			
+			
+			tableSUB.add().uniformX().expandY();
+			tableSUB.add().uniformX();
+			
 	}
 
 	@Override

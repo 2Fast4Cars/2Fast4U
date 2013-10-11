@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 public class MainMenu extends BaseMenuClass implements Screen {
 
 	private TextButton buttonExit, 
-					   buttonPlay, 
+					   buttonLevelMenu, 
 					   buttonSettings, 
 					   buttonAbout, 
 					   buttonHighScore;
@@ -20,11 +20,6 @@ public class MainMenu extends BaseMenuClass implements Screen {
 			startMusic();
 	}
 	
-	public MainMenu(){
-		super();
-	
-	}
-
 	@Override
 	public void render(float delta) {
 		super.render(delta);
@@ -42,26 +37,25 @@ public class MainMenu extends BaseMenuClass implements Screen {
 		
 		super.show();
 		
-//		new HighScore().saveHighScore("Hejsan", "00:00:00", 1);
-		
+
 		// CREATING BUTTONS-------------------------------------
 		
 		// PLAY-------------------------------------------------
-		buttonPlay = new TextButton("PLAY", textButtonStyle);
-		buttonPlay.addListener(new ClickListener() {
+		buttonLevelMenu = new TextButton("LEVEL MENU", skin);
+		buttonLevelMenu.addListener(new ClickListener() {
 
 		@Override
 		public void clicked(InputEvent event, float x, float y) {
-					fastCar.setScene(new GameScreen());
+					fastCar.setScene(new LevelMenu(fastCar));
 					dispose();
-						
+					
 			}
 		});
-		buttonPlay.pad(15);
+		buttonLevelMenu.pad(15);
 		
 		
 		// HIGHSCORE-------------------------------------------------
-		buttonHighScore = new TextButton("HIGH SCORE", textButtonStyle);
+		buttonHighScore = new TextButton("HIGH SCORE", skin);
 		buttonHighScore.addListener(new ClickListener() {
 
 			@Override
@@ -75,7 +69,7 @@ public class MainMenu extends BaseMenuClass implements Screen {
 
 		
 		// SETTINGS-------------------------------------------------
-		buttonSettings = new TextButton("SETTINGS", textButtonStyle);
+		buttonSettings = new TextButton("SETTINGS", skin);
 		buttonSettings.addListener(new ClickListener() {
 
 			@Override
@@ -89,7 +83,7 @@ public class MainMenu extends BaseMenuClass implements Screen {
 
 
 		// ABOUT-------------------------------------------------
-		buttonAbout = new TextButton("ABOUT", textButtonStyle);
+		buttonAbout = new TextButton("ABOUT", skin);
 		buttonAbout.addListener(new ClickListener() {
 
 			@Override
@@ -105,7 +99,7 @@ public class MainMenu extends BaseMenuClass implements Screen {
 		
 		
 		// EXIT-------------------------------------------------
-		buttonExit = new TextButton("EXIT", textButtonStyle);
+		buttonExit = new TextButton("EXIT", skin);
 		buttonExit.addListener(new ClickListener() {
 		
 			@Override
@@ -120,9 +114,10 @@ public class MainMenu extends BaseMenuClass implements Screen {
 		
 		
 		// putting stuff together
-		
-		tableMenu.add(buttonPlay).size(200, 40);
-		tableMenu.getCell(buttonPlay).spaceBottom(15);
+		tableMenu.add("Menu");
+		tableMenu.row();
+		tableMenu.add(buttonLevelMenu).size(200, 40);
+		tableMenu.getCell(buttonLevelMenu).spaceBottom(15);
 		tableMenu.row();
 		tableMenu.add(buttonHighScore).size(200, 40);
 		tableMenu.getCell(buttonHighScore).spaceBottom(15);

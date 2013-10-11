@@ -12,9 +12,6 @@ public class HighScore extends MainMenu implements Screen {
 		super(fastCar, false);
 	}
 	
-	public HighScore(){
-		super();
-	}
 	
 
 	@Override

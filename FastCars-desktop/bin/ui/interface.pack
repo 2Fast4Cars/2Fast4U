@@ -3,40 +3,64 @@ interface.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-MenueBackground1
+MenueBackground
   rotate: false
-  xy: 0, 224
+  xy: 0, 382
   size: 1000, 600
   orig: 1000, 600
   offset: 0, 0
   index: -1
-button.down
+SUBBackground
   rotate: false
-  xy: 0, 112
+  xy: 0, 32
+  size: 540, 350
+  orig: 540, 350
+  offset: 0, 0
+  index: -1
+buttonDown
+  rotate: false
+  xy: 540, 270
   size: 412, 112
-  split: 10, 5, 10, 12
   orig: 412, 112
   offset: 0, 0
   index: -1
-button.Up
+buttonNormal
+  rotate: false
+  xy: 540, 158
+  size: 412, 112
+  orig: 412, 112
+  offset: 0, 0
+  index: -1
+default.selection
   rotate: false
   xy: 0, 0
-  size: 412, 112
-  split: 9, 6, 10, 12
-  orig: 412, 112
+  size: 34, 32
+  orig: 34, 32
   offset: 0, 0
   index: -1
-button.up.back
+ScrollKnob
   rotate: false
-  xy: 412, 112
-  size: 144, 112
-  orig: 144, 112
+  xy: 1000, 938
+  size: 16, 44
+  orig: 16, 44
   offset: 0, 0
   index: -1
-button.up.down
+backgroundScroll
   rotate: false
-  xy: 412, 0
-  size: 144, 112
-  orig: 144, 112
+  xy: 952, 346
+  size: 16, 36
+  orig: 16, 36
+  offset: 0, 0
+  index: -1
+
+interface2.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+SUBBackgroundAbout
+  rotate: false
+  xy: 0, 0
+  size: 540, 350
+  orig: 540, 350
   offset: 0, 0
   index: -1

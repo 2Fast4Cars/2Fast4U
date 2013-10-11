@@ -25,9 +25,22 @@ public class About extends MainMenu implements Screen {
 	@Override
 	public void show() {
 		super.show();
-
-		super.subMenu = true; 
 		
+
+		// Contacts the "subMenuA" in the superClass(BaseMenuClass) and set it to true. 
+				super.subMenuA = true;  
+				
+		// Putting stuffs together		
+				tableSUB.add("About").center();
+				tableSUB.add().width(tableSUB.getWidth() / 2 );
+				tableSUB.add().expandX().width(tableSUB.getWidth() / 2 ).row();
+				
+				
+				tableSUB.add().uniformX().expandY();
+				tableSUB.add().uniformX();
+				
+				
+				
 	}
 
 	@Override

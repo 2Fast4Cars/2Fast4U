@@ -4,12 +4,10 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -26,9 +24,9 @@ public class BaseMenuClass extends Game implements Screen {
 	
 	protected OrthographicCamera camera;
 	protected SpriteBatch batch;
-	protected Texture texture;
-	protected TextureAtlas atlas, atlasB; 
-	protected Sprite sprite, spriteSUB;
+	protected Texture texture, textureA;
+	protected TextureAtlas atlas; 
+	protected Sprite sprite, spriteSUB, spriteSUBA;
 	protected Stage stage;
 	protected Table tableMenu, tableSUB;
 	protected Skin skin;
@@ -38,14 +36,14 @@ public class BaseMenuClass extends Game implements Screen {
 	protected TextButton buttonBack;
 	protected LabelStyle headingStyle;
 	protected Label heading;
-	protected boolean subMenu = false;
+	protected boolean subMenu, subMenuA = false;
+	protected boolean musicPlay = true;
 	
 	// The Constructor with a parameter fastCar. 
 	public BaseMenuClass(FastCars fastCar){
 		this.fastCar = fastCar;
 	}
 	
-	public BaseMenuClass(){}
 	
 	//Create and show the backgroundImage // Buttons
 	@Override
@@ -57,10 +55,9 @@ public class BaseMenuClass extends Game implements Screen {
 		Gdx.input.setInputProcessor(stage);	
 		
 		atlas = new TextureAtlas("ui/interface.pack");
-				
-		skin = new Skin(atlas);
-		skin.add("default", new BitmapFont());
 		
+		skin = new Skin(Gdx.files.internal("ui/menuSkin.json"), atlas);
+	
 		
 		// Creating the table for the Menu bar. 
 		
@@ -73,22 +70,8 @@ public class BaseMenuClass extends Game implements Screen {
 		
 		tableSUB = new Table(skin);
 		tableSUB.setVisible(true);
-		tableSUB.setBounds(349, 135, 540, 350);	
+		tableSUB.setBounds(352, 135, 536, 350);	
 		
-			
-		headingStyle = new LabelStyle(skin.getFont("default"), Color.WHITE);	
-
-		// Setting up for the textButtonStyle
-		
-		textButtonStyle = new TextButtonStyle();
-		textButtonStyle.up = skin.getDrawable("button.Up");
-		textButtonStyle.down = skin.getDrawable("button.down");
-		textButtonStyle.pressedOffsetX = 1;
-		textButtonStyle.pressedOffsetY = -1;
-		textButtonStyle.fontColor = Color.WHITE;
-		textButtonStyle.font = skin.getFont("default");
-		skin.add("default", textButtonStyle);
-	
 		
 		// BackgroundImage
 				float w = Gdx.graphics.getWidth();
@@ -98,17 +81,23 @@ public class BaseMenuClass extends Game implements Screen {
 				camera.setToOrtho(false, 1000, 600);
 				batch = new SpriteBatch();
 				
-				texture = new Texture(Gdx.files.internal("data/gfx/MenueBackground1.png"));
+				texture = new Texture(Gdx.files.internal("img/MenueBackground1.png"));
 				texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 				
 				sprite = new Sprite(texture);
 				sprite.setSize(w, h);
 				
-				texture = new Texture(Gdx.files.internal("data/gfx/SUBBackground.png"));
+				texture = new Texture(Gdx.files.internal("img/SUBBackground.png"));
 				texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+				
+				textureA = new Texture(Gdx.files.internal("img/SUBBackgroundAbout.png"));
+				textureA.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 	
 				spriteSUB = new Sprite(texture);
 				spriteSUB.setBounds(349, 132, 540, 354);
+				
+				spriteSUBA = new Sprite(textureA);
+				spriteSUBA.setBounds(349, 132, 540, 354);
 				
 	}
 	
@@ -116,7 +105,7 @@ public class BaseMenuClass extends Game implements Screen {
 	public void dispose() {
 		batch.dispose();
 		texture.dispose();
-		
+		skin.dispose();
 	}
 	
 		
@@ -134,12 +123,16 @@ public class BaseMenuClass extends Game implements Screen {
 		if(subMenu)
 			spriteSUB.draw(batch);
 		
+		if(subMenuA)
+			spriteSUBA.draw(batch);	
+		
 		
 		batch.end();
 		
 		stage.act(delta);
 		stage.draw();
-		Table.drawDebug(stage);
+		
+//		Table.drawDebug(stage);
 		
 
 		
@@ -181,12 +174,14 @@ public class BaseMenuClass extends Game implements Screen {
 	// CREATING and implements the background music.
 	
 	public void startMusic(){
-			
-//		music = Gdx.audio.newMusic(Gdx.files.internal("data/gfx/getLOW.mp3"));			
-//		
-//		music.play();
-//		music.setLooping(true);
-//		
+		
+	
+		if(musicPlay){
+		music = Gdx.audio.newMusic(Gdx.files.internal("data/gfx/getLOW.mp3"));			
+		
+		music.play();
+		music.setLooping(true);
+			}
 		}
 
 
