@@ -53,7 +53,7 @@ backgroundScroll
   offset: 0, 0
   index: -1
 
-interface2.png
+interface.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
