@@ -89,8 +89,9 @@ public class GameScreen implements Screen {
 	public Car car2;
 	
 	
-	public GameScreen(FastCars fastCar){
+	public GameScreen(FastCars fastCar, String track){
 	  this.fastCars = fastCar;
+	  this.trackName = track;
 	}
 
 	@Override
@@ -475,7 +476,6 @@ public class GameScreen implements Screen {
 	@Override
 	public void show() {
 
-		this.trackName = "bana1";
 //
 //		carSound = Gdx.audio.newMusic(Gdx.files
 //		 .internal("data/gfx/CarSound.mp3"));
