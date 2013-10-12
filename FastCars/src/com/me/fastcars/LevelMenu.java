@@ -107,9 +107,7 @@ public class LevelMenu extends MainMenu implements Screen {
 						fastCar.setScene(new GameScreen(fastCar, list.getSelection().toLowerCase(), 
 								nameField1.getText(), nameField2.getText()));
 						dispose();
-						
-						System.out.println(nameField1.getText());
-				}
+										}
 			});
 			buttonPlay.pad(15);
 		

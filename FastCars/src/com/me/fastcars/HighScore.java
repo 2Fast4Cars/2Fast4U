@@ -7,9 +7,12 @@ import com.badlogic.gdx.Screen;
 public class HighScore extends MainMenu implements Screen {
 	
 	Preferences highscore = Gdx.app.getPreferences("Highscore");
+	String[][] highscoreList = new String[10][2];
 	
 	public HighScore(FastCars fastCar) {
 		super(fastCar, false);
+		readList();
+		highscoreList = sortList(highscoreList);
 	}
 	
 	
@@ -58,109 +61,89 @@ public class HighScore extends MainMenu implements Screen {
 		super.dispose();
 
 	}
-	
-	public float[] getHighScoreTimes(){
-		float[] tempList = new float[10];
-		for(int i=0;i<10;i++)
-		{
-			tempList[i] = getPlayerHighScore(i);
-		}
 		
-		return tempList;
+	private void readList(){
+	    for(int i=0;i<10;i++){
+	      
+	    highscoreList[i][0] = highscore.getString("Name"+(i+1));
+      highscoreList[i][1] = highscore.getString("Time"+(i+1));
+	    
+	    }
+	  
 	}
 	
-	public void checkIfTimeIsBetter(String name, String time){
-		
-		int index = 10;
-		boolean madeHighscore = false;
-		boolean isBetter = true;
-		System.out.println(time);
-		while(index > 1 && isBetter)
-		{
-			String tmp = highscore.getString(("Time" + index));
-			for(int i = 0;i<tmp.length() && tmp.length() == 6;i++)
-			{	
-				if(time.charAt(i)<tmp.charAt(i))
-				{
-					isBetter = true;
-					madeHighscore = true;
-					System.out.println("It's better!");
-					break;
-				}
-				else if(time.charAt(i) > tmp.charAt(i))
-				{
-					isBetter = false;
-					break;
-				}
-			}
-			
-			if(tmp.length() < 6)
-				madeHighscore = true;
-			
-			index--;
-			
-		}
-		
-		System.out.println(madeHighscore);
-		
-		if(madeHighscore)
-		{
-			saveHighScore(name, time, index);
-			System.out.println(name +"  " + time + "  " +"  " + index);
-		
-		}
+	private String[][] sortList(String[][] list){
+	  for(int i=0;i<list.length;i++)
+	  {
+	    for(int o=i+1;o<list.length;o++)
+	    {
+	      
+	      float tmp1 = 1000000;
+	      float tmp2 = 1000000;
+
+        if(!list[i][1].isEmpty())
+          tmp1 = Float.parseFloat(list[i][1].replace(":", ""));
+
+	      
+        if(!list[o][1].isEmpty())
+            tmp2 = Float.parseFloat(list[o][1].replace(":", ""));
+	      
+        
+        if(tmp1 > tmp2)
+	      {
+	        String tmpName = list[i][0];
+	        String tmpTime = list[i][1];
+	        
+	        list[i][0] = list[o][0];
+          list[i][1] = list[o][1];	        
+	        
+          list[o][0] = tmpName;
+          list[o][1] = tmpTime;
+	    }
+	    }
+	  }
+	  
+	  return list;
+	  
+	}
+	
+	
+	public void checkIfTimeIsBetterAndSave(String name, String time){
+			  
+	  String[][] tempList = new String[11][2];
+	  for(int i = 0;i<10;i++)
+	  {
+	    tempList[i][0] = highscoreList[i][0];
+      tempList[i][1] = highscoreList[i][1];	    
+	  }
+	  
+	  tempList[10][0] = name;
+    tempList[10][1] = time;
+    
+    tempList = sortList(tempList);
+
+    
+    
+    for(int i = 0;i<10;i++)
+    {
+      highscoreList[i][0] = tempList[i][0];
+      highscoreList[i][1] = tempList[i][1];
+    }	  
+
+    saveListToFile();
 	}
 	
 	public float getPlayerHighScore(int index){
 		return Float.parseFloat(highscore.getString(("Time"+index)));
 	}
-	/***
-	 * Bumps down all the players below in the highscore.
-	 * @param name - Well, the name.
-	 * @param time - The time represented as a string.
-	 * @param place - index/place.
-	 */
-	public void saveHighScore(String name, String time, int place){
-		
-		int index = 10;
-		if(place > 0 && place < 10)
-		{
-			if(place == 10)
-			{
-				
-				String namePlace = "Name" + place;
-				String timePlace = "Time" + place;
 	
-				highscore.putString(namePlace, name);
-				highscore.putString(timePlace, time);
-				
-			}
-
-			else
-			{
-				while(index>=place)
-				{
-					String tmpName = highscore.getString("Name" + (index-1));
-					String tmpTime = highscore.getString("Time" + (index-1));			
-					
-					highscore.putString("Name"+index, tmpName);
-					highscore.putString("Time" + index, tmpTime);
-					
-					index--;
-				
-				}
-			}
-
-		String namePlace = "Name" + place;
-		String timePlace = "Time" + place;
-
-		highscore.putString(namePlace, name);
-		highscore.putString(timePlace, time);
-		
-		highscore.flush();		
-
-		}
-		
+	private void saveListToFile(){
+	  for(int i = 0;i<10;i++){
+	    highscore.putString("Name"+(i+1), highscoreList[i][0]);
+	    highscore.putString("Time"+(i+1), highscoreList[i][1]);  
+	  }
+	  
+	   highscore.flush();      
 	}
 
 
