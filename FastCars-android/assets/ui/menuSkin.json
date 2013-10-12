@@ -14,13 +14,13 @@
         }
     },
     "com.badlogic.gdx.graphics.g2d.BitmapFont": {
-        "white": {
+        "white1": {
             "file": "font/white.fnt"
         }
     },
     "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
         "default": {
-            "font": white,
+            "font": white1,
             "fontColor": white
 
         }
@@ -29,7 +29,7 @@
         "default": {
             "up": "buttonNormal",
             "down": "buttonDown",
-            "font": white,
+            "font": white1,
             "pressedOffsetX": 1,
             "pressedOffsetY": -1
         }
@@ -37,7 +37,7 @@
     
     "com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle":{
     	"default": { 
-    		"font": white,
+    		"font": white1,
     		"fontColorUnselected": white,
             "fontColorSelected": white,
             "selection": "default.selection"
@@ -54,7 +54,7 @@
     
 	"com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle": {
 		"default": { 
-			"font": white, 
+			"font": white1, 
 			"fontColor": white, 
 			"messageFontColor": white, 
 			"background": SUBBackground, 
