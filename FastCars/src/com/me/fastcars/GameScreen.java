@@ -60,6 +60,7 @@ public class GameScreen implements Screen {
 	private Rectangle finishLine;
 	private Rectangle checkPoint1;
 	private Sprite mapSprite;
+	private Sprite menuSprite;
 
 	private BitmapFont timerFont;
 	private float timerFontWidth;
@@ -117,13 +118,16 @@ public class GameScreen implements Screen {
 	}
 
 	private void renderRaceCompleteMenu() {
+
 		batch.begin();
 		if(whoWon != 0)
 		{
 			switch(whoWon)
 			{
 			case 1:
-				lapFontRed.draw(batch,  nameCar1 + " won!", (camera.position.x - 100),	camera.position.y + 50);
+			  menuSprite.setPosition(camera.position.x - (menuSprite.getWidth()/2), camera.position.y - (menuSprite.getHeight()/2));
+			  menuSprite.draw(batch);
+			  lapFontRed.draw(batch,  nameCar1 + " won!", (camera.position.x - 100),	camera.position.y + 50);
 				break;
 			case 2:
 				lapFontGreen.draw(batch, nameCar2 + " won!", (camera.position.x -100 ),	camera.position.y - 50);
@@ -441,8 +445,15 @@ public class GameScreen implements Screen {
 				* TRACK_WIDTH * mapSprite.getHeight() / mapSprite.getWidth());
 		mapSprite.setPosition(0, 0);
 
+		Texture menuTexture = new Texture(Gdx.files.internal("img/SUBBackground.png"));
+		menuSprite = new Sprite(menuTexture);
+		
+		
 		finishLine = new Rectangle(15, 693, 320, 10);
 		checkPoint1 = new Rectangle(600, 515, 320, 10);
+		
+		
+		
 		}
 
 
