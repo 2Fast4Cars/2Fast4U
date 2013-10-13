@@ -132,7 +132,7 @@ public class BaseMenuClass extends Game implements Screen {
 		stage.act(delta);
 		stage.draw();
 		
-//		Table.drawDebug(stage);
+		Table.drawDebug(stage);
 		
 
 		
