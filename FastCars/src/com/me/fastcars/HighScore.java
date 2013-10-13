@@ -46,10 +46,10 @@ public class HighScore extends MainMenu implements Screen {
 		tableSUB.add(String.format("%02d", i + 1)).padLeft(20f).width(30);
 	    
 		// Names 
-	    tableSUB.add(highscoreList[i][0]).align(Align.left).padLeft(15f);
+	    tableSUB.add(highscoreList[i][0]).left().padLeft(15f);
 	    
 	    // Times
-	    tableSUB.add(highscoreList[i][1]).align(Align.left).expandY().padRight(5).right();
+	    tableSUB.add(highscoreList[i][1]).expandY().padRight(5).right();
 	    tableSUB.row();
 
     }
