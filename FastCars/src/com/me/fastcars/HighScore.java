@@ -32,12 +32,25 @@ public class HighScore extends MainMenu implements Screen {
   public void show() {
     super.show();
     super.subMenu = true;
-    for (int i = 0; i < 10; i++) {
-
-      tableSUB.add(String.format("%02d", i + 1));
-      tableSUB.add(highscoreList[i][0]).align(Align.left).padLeft(50f).padRight(20f);
-      tableSUB.add(highscoreList[i][1]).align(Align.left);
-      tableSUB.row();
+    
+    
+    // Putting stuffs togehter
+    
+		tableSUB.add();
+		tableSUB.add("HighScore").left().padLeft(15f);
+		tableSUB.add().expandX().width(tableSUB.getWidth() / 3 ).row();
+	// insert a HighScore list.  	
+		
+		// Numbers
+	for (int i = 0; i < 8; i++) {
+		tableSUB.add(String.format("%02d", i + 1)).padLeft(20f);
+	    
+		// Names 
+	    tableSUB.add(highscoreList[i][0]).align(Align.left).padLeft(15f).padRight(200f);
+	    
+	    // Times
+	    tableSUB.add(highscoreList[i][1]).align(Align.left).expandY();
+	    tableSUB.row();
 
     }
 
