@@ -55,7 +55,7 @@ public class MainMenu extends BaseMenuClass implements Screen {
 		
 		
 		// HIGHSCORE-------------------------------------------------
-		buttonHighScore = new TextButton("HIGH SCORE", skin);
+		buttonHighScore = new TextButton("HIGHSCORE", skin);
 		buttonHighScore.addListener(new ClickListener() {
 
 			@Override
