@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 
 public class FastCars extends Game {
 	
+	protected boolean gameMusic = true;
 	
 	@Override
 	public void create() {		
