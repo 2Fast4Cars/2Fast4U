@@ -14,7 +14,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class GameScreen implements Screen {
@@ -45,6 +44,9 @@ public class GameScreen implements Screen {
 	private static final float POWER = 20;
 	private static int STEERANGLE = 35;
 	private static float TRACK_WIDTH = 100;
+	private int countDown = 3;
+	
+	private boolean raceStarted = false;
 
 	private TrackLoader track;
 	private String trackName;
@@ -53,6 +55,8 @@ public class GameScreen implements Screen {
 	private Sprite mapSprite;
 	private Sprite menuSprite;
 
+	private Music bgMusic;
+	
 	private BitmapFont timerFont;
 	private float timerFontWidth;
 	private BitmapFont lapFontRed;
@@ -76,6 +80,7 @@ public class GameScreen implements Screen {
 	private FastCars fastCars;
 	public Car car;
 	public Car car2;
+	
 	
 	
 	public GameScreen(FastCars fastCar, String track, String name1, String name2){
@@ -132,6 +137,27 @@ public class GameScreen implements Screen {
     batch.end();
 	}
 
+	private void renderCountDown(float x, float y){
+	  CharSequence timeString;
+    stopTime = System.currentTimeMillis() - startTime;
+    timeString = this.formatTime(stopTime);
+    int timeLeft = 3 - Character.getNumericValue(timeString.charAt(4));
+    String drawString = Integer.toString(timeLeft);
+    if(timeLeft < 1)
+    {
+      drawString = "Start!";
+      x = x - 35;
+    }
+    if(timeLeft <0)
+    {
+      raceStarted = true;
+      startTime = System.currentTimeMillis();
+    }
+
+    
+    lapFontRed.draw(batch, drawString, x, y);    
+	}
+	
 	private void renderFirstCar() {
 
 		CharSequence currentLapCar1 = String.format("Lap: %d/3", car.getLap());
@@ -159,8 +185,10 @@ public class GameScreen implements Screen {
 		mapSprite.draw(batch);
 		carSprite.draw(batch);
 		car2Sprite.draw(batch);
+		if(!raceStarted)
+		  renderCountDown((camera.position.x), camera.position.y +  100);
 		lapFontRed.setColor(1, 0, 0, 1);
-		lapFontRed.draw(batch, currentLapCar1, camera.position.x - 200,
+		lapFontRed.draw(batch, currentLapCar1, camera.position.x - 230,
 				camera.position.y + 270);
 
 		String speed = Integer.toString(Math.round(car.getSpeedKMH())) + " km/h";
@@ -208,7 +236,11 @@ public class GameScreen implements Screen {
 		mapSprite.draw(batch);
 		carSprite.draw(batch);
 		car2Sprite.draw(batch);
-		lapFontGreen.draw(batch, currentLapCar2, camera.position.x - 200,
+    
+		if(!raceStarted)
+      renderCountDown((camera.position.x), camera.position.y +  100);
+    
+		lapFontGreen.draw(batch, currentLapCar2, camera.position.x + 110,
 				camera.position.y + 270);
 
 		String speed = Integer.toString(Math.round(car2.getSpeedKMH())) + " km/h";
@@ -226,6 +258,9 @@ public class GameScreen implements Screen {
 	}
 
 	private void drawTimerInfo() {
+	  
+	  if(raceStarted){
+	   
 
 		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(),
 				Gdx.graphics.getHeight());
@@ -264,13 +299,16 @@ public class GameScreen implements Screen {
 				camera.position.y + (Gdx.graphics.getHeight() * 0.45f));
 
 		batch.end();
+		 
+    }
+		
 	}
 
 	private void updateCar1() {
 
 		Vector2 carPosition = car.getPosition();
 
-		if (!finishedCar1) {
+		if (!finishedCar1 && raceStarted) {
 
 			// Keys for player one.
 			if (Gdx.input.isKeyPressed(Input.Keys.W))
@@ -315,7 +353,7 @@ public class GameScreen implements Screen {
 
 			// Keys and update for 2nd car.
 			if (twoPlayers) {
-				if (!finishedCar2) {
+				if (!finishedCar2 && raceStarted) {
 				if (Gdx.input.isKeyPressed(Input.Keys.DPAD_UP)) {
 					car2.accelerate = GameScreen.ACC_ACCELERATE;
 				} else if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN)) {
@@ -483,10 +521,10 @@ public class GameScreen implements Screen {
 //		carSound = Gdx.audio.newMusic(Gdx.files
 //		 .internal("data/gfx/CarSound.mp3"));
 
-//		bgMusic = Gdx.audio.newMusic(Gdx.files.internal("data/gfx/Storm.mp3"));
-//
-//		bgMusic.play();
-//		bgMusic.setVolume(0.5f);
+		bgMusic = Gdx.audio.newMusic(Gdx.files.internal("data/gfx/Storm.mp3"));
+
+		bgMusic.play();
+		bgMusic.setVolume(0.5f);
 
 		timerFont = new BitmapFont(
 				Gdx.files.internal("ui/fonts/impact25white.fnt"),
@@ -520,13 +558,13 @@ public class GameScreen implements Screen {
 		batch = new SpriteBatch();
 
 		// Creates first car
-		this.car = new Car(world, CAR_WIDTH, CAR_LENGTH, new Vector2(8, 35),
+		this.car = new Car(world, CAR_WIDTH, CAR_LENGTH, new Vector2(6, 33),
 				(float) Math.PI, POWER, STEERANGLE, MAXSPEED);
 
 		// Creates a 2nd car if two players are available.
 		if (twoPlayers) {
-			this.car2 = new Car(world, CAR_WIDTH, CAR_LENGTH, new Vector2(11,
-					35), (float) Math.PI, POWER, STEERANGLE, MAXSPEED);
+			this.car2 = new Car(world, CAR_WIDTH, CAR_LENGTH, new Vector2(9,
+					33), (float) Math.PI, POWER, STEERANGLE, MAXSPEED);
 
 		}
 
