@@ -11,12 +11,10 @@ public class Settings extends MainMenu implements Screen {
 	
 	
 	protected CheckBox musicCheckBoxMenu, musicCheckBoxGame ;
-	protected Music music;
-	
-	
+		
 	public Settings(FastCars fastCar, Music music) {
 		super(fastCar, false);
-		this.music = music;
+		super.music = music;
 	}
 
 	@Override

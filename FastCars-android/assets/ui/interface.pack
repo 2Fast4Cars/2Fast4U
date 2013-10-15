@@ -38,28 +38,28 @@ checkbox.on
   orig: 50, 50
   offset: 0, 0
   index: -1
-default.selection
+selection
   rotate: false
-  xy: 590, 94
-  size: 34, 32
-  orig: 34, 32
+  xy: 590, 106
+  size: 50, 20
+  orig: 50, 20
   offset: 0, 0
   index: -1
 ScrollKnob
   rotate: false
-  xy: 590, 50
+  xy: 590, 62
   size: 16, 44
   orig: 16, 44
   offset: 0, 0
   index: -1
 backgroundScroll
   rotate: false
-  xy: 606, 58
+  xy: 590, 26
   size: 16, 36
   orig: 16, 36
   offset: 0, 0
   index: -1
-checkbox.over
+textField.mark
   rotate: false
   xy: 952, 330
   size: 1, 20

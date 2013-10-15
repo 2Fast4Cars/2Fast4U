@@ -40,7 +40,7 @@
     		"font": white1,
     		"fontColorUnselected": white,
             "fontColorSelected": white,
-            "selection": "default.selection"
+            "selection": "selection"
     	}
     },
     
@@ -58,7 +58,8 @@
 			"fontColor": white, 
 			"messageFontColor": white, 
 			"background": SUBBackground,
-			"cursor": "checkbox.over" 
+			"cursor": "textField.mark",
+			"selection": "selection" 
 			 }
 	},
 	"com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle": {
@@ -67,5 +68,5 @@
 			"checkboxOn": checkbox.on, 
 			"checkboxOff": checkbox.off, 
 			}
-	},
+	}
 }

@@ -19,13 +19,12 @@ public class LevelMenu extends MainMenu implements Screen {
 	private List list;
 	private ScrollPane scrollPane;
 	private TextButton buttonPlay;
-	protected Music music;
 	private String track;
 	
 	
 	public LevelMenu(FastCars fastCar, Music music) {
 		super(fastCar, false);
-		this.music = music;
+		super.music = music;
 	}
 	
 
