@@ -61,7 +61,7 @@ public class MainMenu extends BaseMenuClass implements Screen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 			
-					fastCar.setScreen(new HighScore(fastCar));
+					fastCar.setScreen(new HighScore(fastCar, music));
 					dispose();
 			}
 		});
@@ -75,7 +75,7 @@ public class MainMenu extends BaseMenuClass implements Screen {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 			
-					fastCar.setScreen(new Settings(fastCar));
+					fastCar.setScreen(new Settings(fastCar, music));
 					dispose();
 			}
 		});
@@ -88,7 +88,7 @@ public class MainMenu extends BaseMenuClass implements Screen {
 
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-					fastCar.setScreen(new About(fastCar));
+					fastCar.setScreen(new About(fastCar, music));
 					dispose();
 						
 						

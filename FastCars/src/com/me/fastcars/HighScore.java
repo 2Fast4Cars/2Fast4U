@@ -3,19 +3,26 @@ package com.me.fastcars;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.badlogic.gdx.audio.Music;
 
 public class HighScore extends MainMenu implements Screen {
 
   Preferences highscore = Gdx.app.getPreferences("Highscore");
   String[][] highscoreList = new String[10][2];
 
+  public HighScore(FastCars fastCar, Music music) {
+    super(fastCar, false);
+    readList();
+    super.music = music;
+    highscoreList = sortList(highscoreList);
+  }
+
   public HighScore(FastCars fastCar) {
     super(fastCar, false);
     readList();
     highscoreList = sortList(highscoreList);
   }
-
+  
   @Override
   public void render(float delta) {
     super.render(delta);
@@ -49,7 +56,7 @@ public class HighScore extends MainMenu implements Screen {
 	    tableSUB.add(highscoreList[i][0]).left().padLeft(15f);
 	    
 	    // Times
-	    tableSUB.add(highscoreList[i][1]).expandY().padRight(5).right();
+	    tableSUB.add(highscoreList[i][1]).expandY().padRight(10).right();
 	    tableSUB.row();
 
     }

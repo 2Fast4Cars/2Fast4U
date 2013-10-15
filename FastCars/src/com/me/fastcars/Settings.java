@@ -1,13 +1,15 @@
 package com.me.fastcars;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 
 
 public class Settings extends MainMenu implements Screen {
 
 
-	public Settings(FastCars fastCar) {
+	public Settings(FastCars fastCar, Music music) {
 		super(fastCar, false);
+		super.music = music;
 		
 	}
 

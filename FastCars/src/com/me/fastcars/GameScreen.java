@@ -1,11 +1,9 @@
 package com.me.fastcars;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,15 +11,11 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.scenes.scene2d.ui.List.ListStyle;
 
 public class GameScreen implements Screen {
 
@@ -31,12 +25,9 @@ public class GameScreen implements Screen {
 	private Sprite carSprite;
 	private Sprite car2Sprite;
 	private World world;
-	private Box2DDebugRenderer debugRenderer;
 
 	private int screenWidth;
 	private int screenHeight;
-	private float worldWidth;
-	private float worldHeight;
 	private static int PIXELS_PER_METER = 20; // how many pixels in a meter
 
 	public static final int STEER_NONE = 0;
@@ -75,15 +66,12 @@ public class GameScreen implements Screen {
 	private boolean twoPlayers = true;
 	private boolean finishedCar1;
 	private boolean finishedCar2;
-	private boolean player1Won = false;
 
 	//0 if no one won, 1 if player 1 and 2 if player 2 etc.
 	private short whoWon = 0;
 
 	private long raceTimeCar1;
 	private long raceTimeCar2;
-	private Music carSound;
-	private Music bgMusic;
 
 	private FastCars fastCars;
 	public Car car;
@@ -110,36 +98,38 @@ public class GameScreen implements Screen {
 
 		updateCarLaps();
 		drawTimerInfo();
-
-		renderRaceCompleteMenu();
-
-
+		if(finishedCar1 && finishedCar2)
+		  renderRaceCompleteMenu();
 
 	}
 
 	private void renderRaceCompleteMenu() {
+	  batch.begin();
+    menuSprite.setPosition(camera.position.x - (menuSprite.getWidth()/2), camera.position.y - (menuSprite.getHeight()/2));
+    menuSprite.setScale(0.8f, 0.5f);
+    timerFont.draw(batch, "Press enter to return.",(camera.position.x - 120) , (camera.position.y-40));
+    menuSprite.draw(batch);
 
-		batch.begin();
-		if(whoWon != 0)
-		{
+    {
 			switch(whoWon)
 			{
 			case 1:
-			  menuSprite.setPosition(camera.position.x - (menuSprite.getWidth()/2), camera.position.y - (menuSprite.getHeight()/2));
-			  menuSprite.draw(batch);
-			  lapFontRed.draw(batch,  nameCar1 + " won!", (camera.position.x - 100),	camera.position.y + 50);
-				break;
+		    lapFontRed.draw(batch,  nameCar1 + " won!", (camera.position.x - 130),  camera.position.y + 50);
+			  break;
 			case 2:
-				lapFontGreen.draw(batch, nameCar2 + " won!", (camera.position.x -100 ),	camera.position.y - 50);
-				break;
+		    lapFontGreen.draw(batch, nameCar2 + " won!", (camera.position.x -130 ), camera.position.y + 50);
+			  break;
 			default:
 				break;
 			}
 
 		}
 
-		batch.end();
+    if (Gdx.input.isKeyPressed(Input.Keys.ENTER))
+      fastCars.setScene(new LevelMenu(fastCars));
 
+    
+    batch.end();
 	}
 
 	private void renderFirstCar() {
@@ -516,13 +506,9 @@ public class GameScreen implements Screen {
 
 		screenWidth = Gdx.graphics.getWidth();
 		screenHeight = Gdx.graphics.getHeight();
-		worldWidth = screenWidth / PIXELS_PER_METER;
-		worldHeight = screenHeight / PIXELS_PER_METER;
 
 		screenWidth = Gdx.graphics.getWidth();
 		screenHeight = Gdx.graphics.getHeight();
-		worldWidth = screenWidth / PIXELS_PER_METER;
-		worldHeight = screenHeight / PIXELS_PER_METER;
 
 		world = new World(new Vector2(0.0f, 0.0f), true);
 
@@ -544,7 +530,6 @@ public class GameScreen implements Screen {
 
 		}
 
-		debugRenderer = new Box2DDebugRenderer();
 	}
 
 	@Override

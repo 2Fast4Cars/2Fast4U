@@ -28,6 +28,11 @@ public class LevelMenu extends MainMenu implements Screen {
 		super(fastCar, false);
 		this.music = music;
 	}
+	
+
+  public LevelMenu(FastCars fastCar) {
+    super(fastCar, true);
+  }
 
 	@Override
 	public void render(float delta) {
