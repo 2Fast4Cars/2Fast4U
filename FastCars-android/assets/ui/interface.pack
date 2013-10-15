@@ -3,64 +3,66 @@ interface.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-MenueBackground
-  rotate: false
-  xy: 0, 382
-  size: 1000, 600
-  orig: 1000, 600
-  offset: 0, 0
-  index: -1
 SUBBackground
   rotate: false
-  xy: 0, 32
+  xy: 0, 0
   size: 540, 350
   orig: 540, 350
   offset: 0, 0
   index: -1
 buttonDown
   rotate: false
-  xy: 540, 270
+  xy: 540, 238
   size: 412, 112
   orig: 412, 112
   offset: 0, 0
   index: -1
 buttonNormal
   rotate: false
-  xy: 540, 158
+  xy: 540, 126
   size: 412, 112
   orig: 412, 112
   offset: 0, 0
   index: -1
+checkbox.off
+  rotate: false
+  xy: 540, 76
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+checkbox.on
+  rotate: false
+  xy: 540, 26
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
 default.selection
   rotate: false
-  xy: 0, 0
+  xy: 590, 94
   size: 34, 32
   orig: 34, 32
   offset: 0, 0
   index: -1
 ScrollKnob
   rotate: false
-  xy: 1000, 938
+  xy: 590, 50
   size: 16, 44
   orig: 16, 44
   offset: 0, 0
   index: -1
 backgroundScroll
   rotate: false
-  xy: 952, 346
+  xy: 606, 58
   size: 16, 36
   orig: 16, 36
   offset: 0, 0
   index: -1
-
-interface.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-SUBBackgroundAbout
+checkbox.over
   rotate: false
-  xy: 0, 0
-  size: 540, 350
-  orig: 540, 350
+  xy: 952, 330
+  size: 1, 20
+  orig: 1, 20
   offset: 0, 0
   index: -1

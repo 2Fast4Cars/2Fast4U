@@ -57,7 +57,15 @@
 			"font": white1, 
 			"fontColor": white, 
 			"messageFontColor": white, 
-			"background": SUBBackground, 
+			"background": SUBBackground,
+			"cursor": "checkbox.over" 
 			 }
-	}
+	},
+	"com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle": {
+		"default": { 
+			"font": white1, 
+			"checkboxOn": checkbox.on, 
+			"checkboxOff": checkbox.off, 
+			}
+	},
 }
