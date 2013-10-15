@@ -522,10 +522,14 @@ public class GameScreen implements Screen {
 //		 .internal("data/gfx/CarSound.mp3"));
 
 		bgMusic = Gdx.audio.newMusic(Gdx.files.internal("data/gfx/Storm.mp3"));
+		
+		if(fastCars.gameMusic)
+		  {
+		  bgMusic.play();
+		  bgMusic.setVolume(0.5f);
 
-		bgMusic.play();
-		bgMusic.setVolume(0.5f);
-
+		  }
+		  
 		timerFont = new BitmapFont(
 				Gdx.files.internal("ui/fonts/impact25white.fnt"),
 				Gdx.files.internal("ui/fonts/impact25white.png"), false);
