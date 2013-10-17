@@ -23,8 +23,8 @@
     },
     "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
         "default": {
-            "font": white1,
-            "fontColor": white
+            "font": scrollPaneFont,
+            "fontColor": black
 
         }
     },

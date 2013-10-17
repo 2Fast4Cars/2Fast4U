@@ -131,7 +131,10 @@ public class GameScreen implements Screen {
 		}
 
     if (Gdx.input.isKeyPressed(Input.Keys.ENTER))
+    {
+      bgMusic.stop();
       fastCars.setScene(new LevelMenu(fastCars));
+    }
 
     
     batch.end();
