@@ -43,7 +43,7 @@ public class TrackLoader {
 	
 	public Sprite createSprite(){
 		
-	Texture	mapTexture = new Texture(Gdx.files.internal("data/gfx/" + map + ".png"));
+	Texture	mapTexture = new Texture(Gdx.files.internal("tracks/" + map + ".png"));
 			mapTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
 	Sprite	mapSprite = new Sprite(mapTexture);

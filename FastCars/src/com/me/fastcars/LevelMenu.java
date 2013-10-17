@@ -39,8 +39,8 @@ public class LevelMenu extends MainMenu implements Screen {
 		super.render(delta);
 
 
-    //  Loads the maptexture.
-	    Texture mapTexture = new Texture(Gdx.files.internal("data/gfx/" + list.getSelection().toLowerCase() + ".png"));
+    //  Loads the map texture.
+	    Texture mapTexture = new Texture(Gdx.files.internal("tracks/" + list.getSelection().toLowerCase() + ".png"));
 	    mapTexture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
 	    Sprite map = new Sprite(mapTexture);
 			map.setScale(0.15f, 0.15f);
@@ -72,7 +72,7 @@ public class LevelMenu extends MainMenu implements Screen {
 		
 		
 		// Creating a list for the tracks. 
-			list = new List(new String[] {"MarioBros", "TheGreenMess"}, skin);
+			list = new List(new String[] {"MarioCircuit1", "MarioCircuit2", "MarioCircuit3", "TheGreenMess"}, skin);
 
 		// Creating a scrollPane and implements the list 
 			scrollPane = new ScrollPane(list, skin);
@@ -121,7 +121,7 @@ public class LevelMenu extends MainMenu implements Screen {
 			tableSUB.add().expandX().width(tableSUB.getWidth() / 2 ).row();
 			
 			
-			tableSUB.add(scrollPane).uniformX().size(200, 100).expandY();
+			tableSUB.add(scrollPane).uniformX().size(220, 160).expandY().bottom().padBottom(20);
 			
 			tableSUB.add(buttonPlay).uniformX().size(80, 50).bottom().right();
 			

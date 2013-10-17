@@ -1,22 +1,25 @@
 {
     "com.badlogic.gdx.graphics.Color": {
         "white": {
-            "r": 0,
-            "g": 0,
-            "b": 0,
-            "a": 1
-        },
-        "black": {
             "r": 1,
             "g": 1,
             "b": 1,
             "a": 1
+         
+        },
+        "black": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 1
         }
     },
     "com.badlogic.gdx.graphics.g2d.BitmapFont": {
-        "white1": {
-            "file": "font/white.fnt"
-        }
+        "white1": {"file": "font/white.fnt"},
+        "scrollPaneFont": {"file": "font/scrollPaneFont.fnt"},
+        "textButtonFont": {"file": "font/textButtonFont.fnt"},
+        "checkBoxFont": {"file": "font/checkBoxFont.fnt"}        
+        
     },
     "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
         "default": {
@@ -29,7 +32,8 @@
         "default": {
             "up": "buttonNormal",
             "down": "buttonDown",
-            "font": white1,
+            "font": textButtonFont,
+            "fontColor": white,
             "pressedOffsetX": 1,
             "pressedOffsetY": -1
         }
@@ -37,7 +41,7 @@
     
     "com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle":{
     	"default": { 
-    		"font": white1,
+    		"font": scrollPaneFont,
     		"fontColorUnselected": white,
             "fontColorSelected": white,
             "selection": "selection"
@@ -64,7 +68,7 @@
 	},
 	"com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle": {
 		"default": { 
-			"font": white1, 
+			"font": checkBoxFont, 
 			"checkboxOn": checkbox.on, 
 			"checkboxOff": checkbox.off, 
 			}
