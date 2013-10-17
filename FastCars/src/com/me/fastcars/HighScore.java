@@ -177,8 +177,11 @@ public class HighScore extends MainMenu implements Screen {
 
   }
 
-  public void checkIfTimeIsBetterAndSave(String name, String time) {
+  public void checkIfTimeIsBetterAndSave(String name, String time, String trackName) {
 
+    readList(trackName);
+    sortList(highscoreList);
+    
     String[][] tempList = new String[11][2];
     for (int i = 0; i < 10; i++) {
       tempList[i][0] = highscoreList[i][0];
@@ -195,11 +198,11 @@ public class HighScore extends MainMenu implements Screen {
       highscoreList[i][1] = tempList[i][1];
     }
 
-    saveListToFile("MarioBros");
+    saveListToFile(trackName);
   }
 
   private void saveListToFile(String trackName) {
-    Preferences highscore = Gdx.app.getPreferences("Highscore" +trackName);
+    Preferences highscore = Gdx.app.getPreferences(trackName);
 
     for (int i = 0; i < 10; i++) {
       highscore.putString("Name" + (i + 1), highscoreList[i][0]);

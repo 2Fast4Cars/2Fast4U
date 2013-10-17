@@ -405,7 +405,7 @@ public class GameScreen implements Screen {
 
 					finishedCar1 = true;
 					raceTimeCar1 = System.currentTimeMillis() - startTime;
-					new HighScore(this.fastCars).checkIfTimeIsBetterAndSave(nameCar1, formatTime(raceTimeCar1));
+					new HighScore(this.fastCars).checkIfTimeIsBetterAndSave(nameCar1, formatTime(raceTimeCar1),this.trackName);
 
 				}
 				else {
@@ -429,7 +429,7 @@ public class GameScreen implements Screen {
 
 					finishedCar2 = true;
 					raceTimeCar2 = System.currentTimeMillis() - startTime;
-					new HighScore(fastCars).checkIfTimeIsBetterAndSave(nameCar2, formatTime(raceTimeCar2));
+					new HighScore(fastCars).checkIfTimeIsBetterAndSave(nameCar2, formatTime(raceTimeCar2), this.trackName);
 
 				}
 
