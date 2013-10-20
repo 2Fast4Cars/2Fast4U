@@ -16,7 +16,11 @@ public class TrackLoader {
 	
 	Body trackBody;
 	String map;
-	
+	public final int POSITIONCAR1x;
+  public final int POSITIONCAR1y;
+  public final int POSITIONCAR2x;
+  public final int POSITIONCAR2y;
+  
 	public TrackLoader(String map, World world, float TRACK_WIDTH) {
 		this.map = map;
 		
@@ -39,6 +43,15 @@ public class TrackLoader {
 	 
 	    // 4. Create the body fixture automatically by using the loader.
 	    loader.attachFixture(trackBody, map , fd, TRACK_WIDTH);
+	    
+	    int[] positions = new int[4];
+	    System.out.println(this.map);
+	    positions = FileHandler.carPositionForTrack(this.map);
+	    POSITIONCAR1x = positions[0];
+	    POSITIONCAR1y = positions[1];
+      POSITIONCAR2x = positions[2];
+      POSITIONCAR2y = positions[3];
+      
 	}
 	
 	public Sprite createSprite(){

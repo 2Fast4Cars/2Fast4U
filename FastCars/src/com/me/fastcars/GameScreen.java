@@ -94,6 +94,8 @@ public class GameScreen implements Screen {
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		
+		System.out.println( car.getPosition().x + "   "  + car.getPosition().y);
 
 		world.step(Gdx.app.getGraphics().getDeltaTime(), 3, 3);
 		world.clearForces();
@@ -565,13 +567,14 @@ public class GameScreen implements Screen {
 		batch = new SpriteBatch();
 
 		// Creates first car
-		this.car = new Car(world, CAR_WIDTH, CAR_LENGTH, new Vector2(6, 33),
+		System.out.println(this.track.POSITIONCAR1x);
+		this.car = new Car(world, CAR_WIDTH, CAR_LENGTH, new Vector2(this.track.POSITIONCAR1x, this.track.POSITIONCAR1y),
 				(float) Math.PI, POWER, STEERANGLE, MAXSPEED);
 
 		// Creates a 2nd car if two players are available.
 		if (twoPlayers) {
-			this.car2 = new Car(world, CAR_WIDTH, CAR_LENGTH, new Vector2(9,
-					33), (float) Math.PI, POWER, STEERANGLE, MAXSPEED);
+			this.car2 = new Car(world, CAR_WIDTH, CAR_LENGTH, new Vector2(this.track.POSITIONCAR2x,
+					this.track.POSITIONCAR2y), (float) Math.PI, POWER, STEERANGLE, MAXSPEED);
 
 		}
 

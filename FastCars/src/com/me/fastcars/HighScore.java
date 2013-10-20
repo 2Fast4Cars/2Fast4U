@@ -33,25 +33,14 @@ public class HighScore extends MainMenu implements Screen {
     return tracks;
     
   }
-  
-  public int numberOfTracks(){
-    FileHandle tracksFile = Gdx.files.internal("data/tracks.cfg");
-    String fileString = tracksFile.readString();
-    String[] tracks = fileString.split("\n");
-    for(int i = 0;i<tracks.length;i++){
-      tracks[0] = tracks[0].replace("\n", "");
-    }
-    
-    return tracks.length;
-    
-  }
+
     
   @Override
   public void render(float delta) {
     super.render(delta);
     
     String track = trackList.getSelection().substring(0, trackList.getSelection().length());
-    readList(track);
+    highscoreList = FileHandler.readList(track);
     sortList(highscoreList);
     
     
@@ -104,7 +93,7 @@ public class HighScore extends MainMenu implements Screen {
     ScrollPane scrollPane = new ScrollPane(trackList, skin);
     tableSUB.add(scrollPane).expandY().left();    
     String track = trackList.getSelection().substring(0, trackList.getSelection().length()-1);
-    readList(track);
+    highscoreList = FileHandler.readList(track);
     highScoreText.setPosition((Gdx.graphics.getWidth()/2)+80, Gdx.graphics.getHeight()/2);
  
     
@@ -136,16 +125,6 @@ public class HighScore extends MainMenu implements Screen {
 
   }
 
-  public void readList(String trackName) {
-    Preferences highscore = Gdx.app.getPreferences(trackName);
-
-    for (int i = 0; i < 10; i++) {
-
-      highscoreList[i][0] = highscore.getString("Name" + (i + 1));
-      highscoreList[i][1] = highscore.getString("Time" + (i + 1));
-
-    }
-  }
 
   private String[][] sortList(String[][] list) {
     for (int i = 0; i < list.length; i++) {
@@ -179,7 +158,7 @@ public class HighScore extends MainMenu implements Screen {
 
   public void checkIfTimeIsBetterAndSave(String name, String time, String trackName) {
 
-    readList(trackName);
+    highscoreList = FileHandler.readList(trackName);
     sortList(highscoreList);
     
     String[][] tempList = new String[11][2];
@@ -198,7 +177,7 @@ public class HighScore extends MainMenu implements Screen {
       highscoreList[i][1] = tempList[i][1];
     }
 
-    saveListToFile(trackName);
+    FileHandler.saveListToFile(trackName, highscoreList);
   }
 
   private void saveListToFile(String trackName) {
