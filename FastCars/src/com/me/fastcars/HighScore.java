@@ -37,7 +37,7 @@ public class HighScore extends MainMenu implements Screen {
     String highscoreNames = "";
     String highscoreTimes = "";
     // Numbers
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 10; i++) {
       String name = highscoreList[i][0];
       String time = highscoreList[i][1];
       if(name == null)
@@ -46,7 +46,7 @@ public class HighScore extends MainMenu implements Screen {
         time = "";
       
 
-      highscoreNames = highscoreNames + String.format("%02d ", i + 1) + name +"\n";
+      highscoreNames = highscoreNames + String.format("%02d  ", i + 1) + name +"\n";
       highscoreTimes = highscoreTimes + time + "\n";
     }
 
@@ -75,24 +75,30 @@ public class HighScore extends MainMenu implements Screen {
     highScoreNameText = new Label(highScoreListString, skin);
     highScoreTimeText = new Label(highScoreListString, skin);
 
+    // Creates the tracklist. 
+    trackList = new List(FileHandler.readTracks(), skin);
+    
+    // Creates the scroll.
+    ScrollPane scrollPane = new ScrollPane(trackList, skin);
     
     // Putting stuffs together
-
-    tableSUB.left().padLeft(15f);
-		tableSUB.add("HighScore").left().row();
-		
-	// insert a HighScore list. 
-		trackList = new List(FileHandler.readTracks(),skin);
-    ScrollPane scrollPane = new ScrollPane(trackList, skin);
-    tableSUB.add(scrollPane).expandY().left();    
-    String track = trackList.getSelection().substring(0, trackList.getSelection().length()-1);
+	tableSUB.add("HighScore").center();
+	tableSUB.add().width(tableSUB.getWidth() / 2 );
+	tableSUB.add().expandX().width(tableSUB.getWidth() / 2 ).row();
+    
+	tableSUB.add(scrollPane).uniformX().expandY().size(150, 140);  
+    
+	tableSUB.add().uniformX();
+	
+	
+    // insert a HighScore list. 
+	String track = trackList.getSelection().substring(0, trackList.getSelection().length()-1);
+    
     highscoreList = FileHandler.readList(track);
     highScoreNameText.setPosition((Gdx.graphics.getWidth()/2)+80, Gdx.graphics.getHeight()/2);
-    highScoreTimeText.setPosition((Gdx.graphics.getWidth()/2)+220, Gdx.graphics.getHeight()/2);
+    highScoreTimeText.setPosition((Gdx.graphics.getWidth()/2)+290, Gdx.graphics.getHeight()/2);
     
-  // Names 
-    
-    // Times
+
 
     
   }

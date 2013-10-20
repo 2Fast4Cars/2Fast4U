@@ -18,12 +18,13 @@
         "white1": {"file": "font/white.fnt"},
         "scrollPaneFont": {"file": "font/scrollPaneFont.fnt"},
         "textButtonFont": {"file": "font/textButtonFont.fnt"},
-        "checkBoxFont": {"file": "font/checkBoxFont.fnt"}        
+        "checkBoxFont": {"file": "font/checkBoxFont.fnt"},
+        "labelFont": {"file": "font/labelFont.fnt"}        
         
     },
     "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
         "default": {
-            "font": scrollPaneFont,
+            "font": labelFont,
             "fontColor": black
 
         }
