@@ -82,7 +82,8 @@ public class HighScore extends MainMenu implements Screen {
     ScrollPane scrollPane = new ScrollPane(trackList, skin);
     
     // Putting stuffs together
-	tableSUB.add("HighScore").center();
+	tableSUB.add("HighScore       Nr").padLeft(65);
+	tableSUB.add("Name                  Time").width(tableSUB.getWidth() / 2 );
 	tableSUB.add().width(tableSUB.getWidth() / 2 );
 	tableSUB.add().expandX().width(tableSUB.getWidth() / 2 ).row();
     
