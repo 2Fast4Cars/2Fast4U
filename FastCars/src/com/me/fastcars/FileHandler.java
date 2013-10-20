@@ -14,6 +14,28 @@ public  class FileHandler {
     
   }
   
+  public static String[] readTracks(){
+    FileHandle tracksFile = Gdx.files.internal("data/tracks.cfg");
+    String fileString = tracksFile.readString();
+    String[] temp = fileString.split("\n");
+    String[] tracks = new String[numberOfTracks()];
+
+    for(int i = 0;i<temp.length;i++){
+      temp[i] = temp[i].replace("\n", " ");
+      temp[i] = temp[i].trim();
+    }
+    
+    for(int i = 0;i<temp.length;i++){
+      String[] tmp2;
+      tmp2 = temp[i].split(";");
+      tracks[i] = tmp2[0];
+    }
+
+    return tracks;
+    
+  }  
+  
+  
   public static int[] carPositionForTrack(String trackName){
    
     FileHandle tracksFile = Gdx.files.internal("data/tracks.cfg");
@@ -21,7 +43,6 @@ public  class FileHandler {
     String[] temp = fileString.split("\n");
     String[][] tracks = new String[numberOfTracks()][13];
 
-    System.out.print(temp[0]);
     for(int i = 0;i<temp.length;i++){
       temp[i] = temp[i].replace("\n", " ");
       temp[i] = temp[i].trim();
@@ -45,8 +66,6 @@ public  class FileHandler {
       {
         for(int o=0;o<4;o++)
           positions[o] = Integer.parseInt(tracks[i][o+1]);
-
-        System.out.println(positions[0]);
         break;
       }
       
@@ -64,7 +83,6 @@ public  class FileHandler {
     String[] temp = fileString.split("\n");
     String[][] tracks = new String[numberOfTracks()][9];
 
-    System.out.print(temp[0]);
     for(int i = 0;i<temp.length;i++){
       temp[i] = temp[i].replace("\n", " ");
       temp[i] = temp[i].trim();
@@ -94,7 +112,6 @@ public  class FileHandler {
         for(int o=0;o<2;o++){
           for(int u=0;u<4;u++){
             rectangle[o][u] = Integer.parseInt(tracks[i][o*4+(u+1)]);
-            System.out.println(rectangle[o][u]);
           }
             
         }

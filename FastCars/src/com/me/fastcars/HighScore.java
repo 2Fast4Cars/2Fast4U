@@ -1,10 +1,8 @@
 package com.me.fastcars;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
@@ -14,7 +12,8 @@ public class HighScore extends MainMenu implements Screen {
   String[][] highscoreList = new String[10][2];
   List trackList;
   String highScoreListString;
-  Label highScoreText;
+  Label highScoreNameText;
+  Label highScoreTimeText;
 
   public HighScore(FastCars fastCar, Music music) {
     super(fastCar, false);
@@ -25,15 +24,6 @@ public class HighScore extends MainMenu implements Screen {
     super(fastCar, false);
   }
   
-  public String[] readTracks(){
-    FileHandle tracksFile = Gdx.files.internal("data/tracks.cfg");
-    String fileString = tracksFile.readString();
-    String[] tracks = fileString.split(";");
-    System.out.print(tracks[0] + "   " + tracks[1]);
-    return tracks;
-    
-  }
-
     
   @Override
   public void render(float delta) {
@@ -44,7 +34,8 @@ public class HighScore extends MainMenu implements Screen {
     sortList(highscoreList);
     
     
-    String highScoreListString = "";
+    String highscoreNames = "";
+    String highscoreTimes = "";
     // Numbers
     for (int i = 0; i < 8; i++) {
       String name = highscoreList[i][0];
@@ -55,15 +46,16 @@ public class HighScore extends MainMenu implements Screen {
         time = "";
       
 
-      highScoreListString = highScoreListString + String.format("%02d", i + 1) + "\t" + name + "\t" + time +"\n";
-
+      highscoreNames = highscoreNames + String.format("%02d ", i + 1) + name +"\n";
+      highscoreTimes = highscoreTimes + time + "\n";
     }
 
     batch.begin();
 
-    highScoreText.setText(highScoreListString);
-    highScoreText.draw(batch, 1);
-
+    highScoreNameText.setText(highscoreNames);
+    highScoreNameText.draw(batch, 1);
+    highScoreTimeText.setText(highscoreTimes);
+    highScoreTimeText.draw(batch, 1);
     
     batch.end();    
 
@@ -80,7 +72,8 @@ public class HighScore extends MainMenu implements Screen {
     super.show();
     super.subMenu = true;
   
-    highScoreText = new Label(highScoreListString, skin);
+    highScoreNameText = new Label(highScoreListString, skin);
+    highScoreTimeText = new Label(highScoreListString, skin);
 
     
     // Putting stuffs together
@@ -89,13 +82,13 @@ public class HighScore extends MainMenu implements Screen {
 		tableSUB.add("HighScore").left().row();
 		
 	// insert a HighScore list. 
-		trackList = new List(readTracks(),skin);
+		trackList = new List(FileHandler.readTracks(),skin);
     ScrollPane scrollPane = new ScrollPane(trackList, skin);
     tableSUB.add(scrollPane).expandY().left();    
     String track = trackList.getSelection().substring(0, trackList.getSelection().length()-1);
     highscoreList = FileHandler.readList(track);
-    highScoreText.setPosition((Gdx.graphics.getWidth()/2)+80, Gdx.graphics.getHeight()/2);
- 
+    highScoreNameText.setPosition((Gdx.graphics.getWidth()/2)+80, Gdx.graphics.getHeight()/2);
+    highScoreTimeText.setPosition((Gdx.graphics.getWidth()/2)+220, Gdx.graphics.getHeight()/2);
     
   // Names 
     
@@ -178,17 +171,6 @@ public class HighScore extends MainMenu implements Screen {
     }
 
     FileHandler.saveListToFile(trackName, highscoreList);
-  }
-
-  private void saveListToFile(String trackName) {
-    Preferences highscore = Gdx.app.getPreferences(trackName);
-
-    for (int i = 0; i < 10; i++) {
-      highscore.putString("Name" + (i + 1), highscoreList[i][0]);
-      highscore.putString("Time" + (i + 1), highscoreList[i][1]);
-    }
-
-    highscore.flush();
   }
 
 }
