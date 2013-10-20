@@ -20,6 +20,15 @@ public class TrackLoader {
   public final int POSITIONCAR1y;
   public final int POSITIONCAR2x;
   public final int POSITIONCAR2y;
+  public final int FINISHLINEPOSx;
+  public final int FINISHLINEPOSy;
+  public final int FINISHLINEWIDTH;
+  public final int FINISHLINEHEIGHT;
+
+  public final int CHECKPOINTPOSx;
+  public final int CHECKPOINTPOSy;
+  public final int CHECKPOINTWIDTH;
+  public final int CHECKPOINTHEIGHT;
   
 	public TrackLoader(String map, World world, float TRACK_WIDTH) {
 		this.map = map;
@@ -45,12 +54,23 @@ public class TrackLoader {
 	    loader.attachFixture(trackBody, map , fd, TRACK_WIDTH);
 	    
 	    int[] positions = new int[4];
-	    System.out.println(this.map);
+
 	    positions = FileHandler.carPositionForTrack(this.map);
 	    POSITIONCAR1x = positions[0];
 	    POSITIONCAR1y = positions[1];
       POSITIONCAR2x = positions[2];
       POSITIONCAR2y = positions[3];
+      
+      int[][] finishLineAndCheckPoint = FileHandler.finishLineAndCheckPointRectangle(map);
+      FINISHLINEPOSx = finishLineAndCheckPoint[0][0];
+      FINISHLINEPOSy = finishLineAndCheckPoint[0][1];
+      FINISHLINEWIDTH = finishLineAndCheckPoint[0][2];
+      FINISHLINEHEIGHT = finishLineAndCheckPoint[0][3];
+      
+      CHECKPOINTPOSx = finishLineAndCheckPoint[1][0];
+      CHECKPOINTPOSy = finishLineAndCheckPoint[1][1];
+      CHECKPOINTWIDTH = finishLineAndCheckPoint[1][2];
+      CHECKPOINTHEIGHT = finishLineAndCheckPoint[1][3];
       
 	}
 	

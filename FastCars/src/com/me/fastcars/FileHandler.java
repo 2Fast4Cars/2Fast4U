@@ -19,7 +19,7 @@ public  class FileHandler {
     FileHandle tracksFile = Gdx.files.internal("data/tracks.cfg");
     String fileString = tracksFile.readString();
     String[] temp = fileString.split("\n");
-    String[][] tracks = new String[numberOfTracks()][5];
+    String[][] tracks = new String[numberOfTracks()][13];
 
     System.out.print(temp[0]);
     for(int i = 0;i<temp.length;i++){
@@ -53,6 +53,59 @@ public  class FileHandler {
     }
     
     return positions;
+    
+  }
+  
+  public static int[][] finishLineAndCheckPointRectangle(String trackName)
+  {
+
+    FileHandle tracksFile = Gdx.files.internal("data/tracks.cfg");
+    String fileString = tracksFile.readString();
+    String[] temp = fileString.split("\n");
+    String[][] tracks = new String[numberOfTracks()][9];
+
+    System.out.print(temp[0]);
+    for(int i = 0;i<temp.length;i++){
+      temp[i] = temp[i].replace("\n", " ");
+      temp[i] = temp[i].trim();
+    }
+    
+    for(int i = 0;i<temp.length;i++){
+      String[] tmp2;
+      tmp2 = temp[i].split(";");
+      tracks[i][0] = tmp2[0];
+      tracks[i][1] = tmp2[5];
+      tracks[i][2] = tmp2[6];
+      tracks[i][3] = tmp2[7];
+      tracks[i][4] = tmp2[8];
+      tracks[i][5] = tmp2[9];
+      tracks[i][6] = tmp2[10];
+      tracks[i][7] = tmp2[11];
+      tracks[i][8] = tmp2[12];
+      
+    }
+    
+    int[][] rectangle = new int[2][8];
+    
+    for(int i=0;i<tracks.length;i++)
+    {
+      if(tracks[i][0].toLowerCase().equals(trackName.toLowerCase()))
+      {
+        for(int o=0;o<2;o++){
+          for(int u=0;u<4;u++){
+            rectangle[o][u] = Integer.parseInt(tracks[i][o*4+(u+1)]);
+            System.out.println(rectangle[o][u]);
+          }
+            
+        }
+          
+        break;
+      }
+      
+    }
+    
+    return rectangle;
+    
     
   }
   

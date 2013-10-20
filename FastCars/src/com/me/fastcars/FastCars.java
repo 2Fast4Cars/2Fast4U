@@ -9,7 +9,8 @@ public class FastCars extends Game {
 	
 	@Override
 	public void create() {		
-	  		setScreen(new MainMenu(this, true));
+	    FileHandler.finishLineAndCheckPointRectangle("MarioCircuit1");
+	    setScreen(new MainMenu(this, true));
 	}
 	
 	

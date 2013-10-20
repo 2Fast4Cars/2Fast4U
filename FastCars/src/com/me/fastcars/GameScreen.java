@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,6 +12,8 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -81,6 +84,7 @@ public class GameScreen implements Screen {
 	public Car car;
 	public Car car2;
 	
+	private ShapeRenderer sr = new ShapeRenderer();
 	
 	
 	public GameScreen(FastCars fastCar, String track, String name1, String name2){
@@ -94,14 +98,22 @@ public class GameScreen implements Screen {
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		
-		System.out.println( car.getPosition().x + "   "  + car.getPosition().y);
 
+		
 		world.step(Gdx.app.getGraphics().getDeltaTime(), 3, 3);
 		world.clearForces();
 
 		renderFirstCar();
 		renderSecondCar();
+
+    sr.setProjectionMatrix(camera.combined);
+    sr.begin(ShapeType.FilledRectangle);
+    sr.setColor(new Color(Color.RED));
+    sr.filledRect(finishLine.x, finishLine.y-45, finishLine.width, finishLine.height);
+    sr.setColor(new Color(Color.GREEN));
+    sr.filledRect(checkPoint1.x, checkPoint1.y, checkPoint1.width, checkPoint1.height);
+    sr.end();
+    
 
 		updateCarLaps();
 		drawTimerInfo();
@@ -399,6 +411,7 @@ public class GameScreen implements Screen {
 	// Checks and updates the laps for the cars.
 	private void updateCarLaps() {
 
+	   System.out.println(car2Sprite.getX() + "   " + car2Sprite.getY());
 		// Check if the first car have crossed the finish line.
 		if (finishLine.contains(carSprite.getX(), carSprite.getY())) {
 			if (car.getPassedCheckPoints()) {
@@ -482,8 +495,8 @@ public class GameScreen implements Screen {
 		menuSprite = new Sprite(menuTexture);
 		
 		
-		finishLine = new Rectangle(15, 693, 320, 10);
-		checkPoint1 = new Rectangle(600, 515, 320, 10);
+		finishLine = new Rectangle(track.FINISHLINEPOSx, track.FINISHLINEPOSy, track.FINISHLINEWIDTH, track.FINISHLINEHEIGHT);
+		checkPoint1 = new Rectangle(track.CHECKPOINTPOSx, track.CHECKPOINTPOSy, track.CHECKPOINTWIDTH, track.CHECKPOINTHEIGHT);
 		
 		
 		
@@ -567,7 +580,6 @@ public class GameScreen implements Screen {
 		batch = new SpriteBatch();
 
 		// Creates first car
-		System.out.println(this.track.POSITIONCAR1x);
 		this.car = new Car(world, CAR_WIDTH, CAR_LENGTH, new Vector2(this.track.POSITIONCAR1x, this.track.POSITIONCAR1y),
 				(float) Math.PI, POWER, STEERANGLE, MAXSPEED);
 
