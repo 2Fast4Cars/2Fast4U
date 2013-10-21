@@ -178,6 +178,7 @@ public class HighScore extends MainMenu implements Screen {
     }
 
     FileHandler.saveListToFile(trackName, highscoreList);
+    
   }
 
 }

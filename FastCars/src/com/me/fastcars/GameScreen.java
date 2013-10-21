@@ -84,8 +84,6 @@ public class GameScreen implements Screen {
   public Car car;
   public Car car2;
 
-  private ShapeRenderer sr = new ShapeRenderer();
-
   public GameScreen(FastCars fastCar, String track, String name1, String name2) {
     this.fastCars = fastCar;
     this.trackName = track;
@@ -103,17 +101,6 @@ public class GameScreen implements Screen {
 
     renderFirstCar();
     renderSecondCar();
-
-    sr.setProjectionMatrix(camera.combined);
-    sr.begin(ShapeType.FilledRectangle);
-    sr.setColor(new Color(Color.RED));
-    System.out.println(finishLine.x + "   " + finishLine.y);
-    sr.filledRect(finishLine.x - 50, finishLine.y, finishLine.width,
-        finishLine.height);
-    sr.setColor(new Color(Color.GREEN));
-    sr.filledRect(checkPoint1.x, checkPoint1.y, checkPoint1.width,
-        checkPoint1.height);
-    sr.end();
 
     updateCarLaps();
     drawTimerInfo();
@@ -168,6 +155,7 @@ public class GameScreen implements Screen {
     if (timeLeft < 0) {
       raceStarted = true;
       startTime = System.currentTimeMillis();
+      stopTime = 0;
     }
 
     lapFontRed.draw(batch, drawString, x, y);
@@ -294,6 +282,7 @@ public class GameScreen implements Screen {
       else if (finishedCar1 && finishedCar2 && stopTime == 0) {
         stopTime = System.currentTimeMillis() - startTime;
         timeString = this.formatTime(stopTime);
+        System.out.println("Hej");
       }
 
       else
