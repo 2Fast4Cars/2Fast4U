@@ -19,7 +19,6 @@ public class LevelMenu extends MainMenu implements Screen {
 	private List list;
 	private ScrollPane scrollPane;
 	private TextButton buttonPlay;
-	private String track;
 	
 	
 	public LevelMenu(FastCars fastCar, Music music) {
@@ -77,10 +76,6 @@ public class LevelMenu extends MainMenu implements Screen {
 		// Creating a scrollPane and implements the list 
 			scrollPane = new ScrollPane(list, skin);
 		
-		// Setting the track to "bana1" as default.
-			track = "bana1";
-		
-
 
 		
 		

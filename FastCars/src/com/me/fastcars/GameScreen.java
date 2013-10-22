@@ -1,10 +1,12 @@
+/**
+ * @author Mattias Didriksson & Anders Blomkvist.
+ */
 package com.me.fastcars;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,8 +14,6 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -21,15 +21,8 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class GameScreen implements Screen {
 
-  private OrthographicCamera camera;
-  private SpriteBatch batch;
-  private Texture carTexture;
-  private Sprite carSprite;
-  private Sprite car2Sprite;
-  private World world;
-
-  private int screenWidth;
-  private int screenHeight;
+//Declaration of all constants and variables.
+  
   private static int PIXELS_PER_METER = 20; // how many pixels in a meter
 
   public static final int STEER_NONE = 0;
@@ -45,12 +38,19 @@ public class GameScreen implements Screen {
 
   private static final float MAXSPEED = 80;
   private static final float POWER = 20;
-  private static int STEERANGLE = 35;
   private static float TRACK_WIDTH = 100;
-  private int countDown = 3;
+  private static int STEERANGLE = 35;
+  
+  private OrthographicCamera camera;
+  private SpriteBatch batch;
+  private Texture carTexture;
+  private Sprite carSprite;
+  private Sprite car2Sprite;
+  private World world;
 
-  private boolean raceStarted = false;
-
+  private int screenWidth;
+  private int screenHeight;
+  
   private TrackLoader track;
   private String trackName;
   private Rectangle finishLine;
@@ -73,6 +73,8 @@ public class GameScreen implements Screen {
   private boolean twoPlayers = true;
   private boolean finishedCar1;
   private boolean finishedCar2;
+  private boolean raceStarted = false;
+
 
   // 0 if no one won, 1 if player 1 and 2 if player 2 etc.
   private short whoWon = 0;
@@ -80,10 +82,18 @@ public class GameScreen implements Screen {
   private long raceTimeCar1;
   private long raceTimeCar2;
 
+  
   private FastCars fastCars;
   public Car car;
   public Car car2;
 
+  /**
+   * 
+   * @param fastCar - The game object. Required in order to know the settings.
+   * @param track - The track started.
+   * @param name1 - The name of the first player.
+   * @param name2 - The name of the 2nd player.
+   */
   public GameScreen(FastCars fastCar, String track, String name1, String name2) {
     this.fastCars = fastCar;
     this.trackName = track;
@@ -91,24 +101,32 @@ public class GameScreen implements Screen {
     this.nameCar2 = name2;
   }
 
+  
+  // The main loop of the program. Thill will handle the rendering and making sure that the location updates.
+  //The render method is called over and over again.
   @Override
   public void render(float delta) {
     Gdx.gl.glClearColor(0, 0, 0, 1);
     Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
+    //Simulates the physical world.
     world.step(Gdx.app.getGraphics().getDeltaTime(), 3, 3);
     world.clearForces();
 
+    //Renders the first and second car.
     renderFirstCar();
     renderSecondCar();
 
+    //Updates and renders the car laps as well as the timer.
     updateCarLaps();
     drawTimerInfo();
     if (finishedCar1 && finishedCar2)
       renderRaceCompleteMenu();
+    
 
   }
 
+  //When the race is over this method will be contacted and render the menu for the return menu.
   private void renderRaceCompleteMenu() {
     batch.begin();
     menuSprite.setPosition(camera.position.x - (menuSprite.getWidth() / 2),
@@ -138,10 +156,13 @@ public class GameScreen implements Screen {
       bgMusic.stop();
       fastCars.setScene(new LevelMenu(fastCars));
     }
+    
+
 
     batch.end();
   }
 
+  //Renders the count down in the beginning.
   private void renderCountDown(float x, float y) {
     CharSequence timeString;
     stopTime = System.currentTimeMillis() - startTime;
@@ -161,6 +182,8 @@ public class GameScreen implements Screen {
     lapFontRed.draw(batch, drawString, x, y);
   }
 
+  //Renders everything centered around the first car.
+  //This will set the cameras origo to 0,0.
   private void renderFirstCar() {
 
     CharSequence currentLapCar1 = String.format("Lap: %d/3", car.getLap());
@@ -210,6 +233,8 @@ public class GameScreen implements Screen {
 
   }
 
+  //Renders everything centered around the 2nd car.
+  //This method sets the camera to origo around the graphics.width/2.
   private void renderSecondCar() {
     Gdx.gl.glViewport(Gdx.graphics.getWidth() / 2, 0,
         Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight());
@@ -256,6 +281,7 @@ public class GameScreen implements Screen {
 
   }
 
+  //Draws the timer on the top of the screen.
   private void drawTimerInfo() {
 
     if (raceStarted) {
@@ -300,6 +326,8 @@ public class GameScreen implements Screen {
 
   }
 
+  //Will handle the inputs for the first car as well as update the sprite
+  //to follow the physical body of the car.
   private void updateCar1() {
 
     Vector2 carPosition = car.getPosition();
@@ -339,6 +367,8 @@ public class GameScreen implements Screen {
 
   }
 
+  //Will handle the inputs for the second car as well as update the sprite
+  //to follow the physical body of the car.
   private void updateCar2() {
 
     Vector2 car2Position = car2.getPosition();
@@ -439,6 +469,8 @@ public class GameScreen implements Screen {
 
   }
 
+  // Creates sprites for the two cars as well as the tracks sprite.
+  // Also creates the rectangles handling checkpoints and finish.
   private void createSprites() {
 
     carTexture = new Texture(Gdx.files.internal("data/gfx/CarRed.png"));
@@ -473,6 +505,7 @@ public class GameScreen implements Screen {
 
   }
 
+  
   @Override
   public void dispose() {
     batch.dispose();
@@ -481,15 +514,13 @@ public class GameScreen implements Screen {
     world.dispose();
   }
 
+  //Formats the time string as the string will be formated in milliseconds when passed from Libgdx.
   private String formatTime(long time) {
-    // long seconds = TimeUnit.SECONDS.convert(time, TimeUnit.NANOSECONDS);
     double rest = time % 1000 / 10;
     double seconds = (double) time / 1000;
     double minutes = seconds / 60;
     seconds = seconds % 60;
 
-    // long tenthOfSecond = TimeUnit.MICROSECONDS.convert(time - seconds,
-    // TimeUnit.NANOSECONDS);
 
     return String.format("%02d:%02d:%02d", (int) minutes, (int) seconds,
         (int) rest);
@@ -501,12 +532,10 @@ public class GameScreen implements Screen {
 
   }
 
+  //This method will be called ONCE when the object is first displayed.
+  //Here we will set up most of the inmformation as well as make sure that all the fonts/sprites etc have been loaded.
   @Override
   public void show() {
-
-    //
-    // carSound = Gdx.audio.newMusic(Gdx.files
-    // .internal("data/gfx/CarSound.mp3"));
 
     bgMusic = Gdx.audio.newMusic(Gdx.files.internal("data/gfx/Storm.mp3"));
 
@@ -537,6 +566,7 @@ public class GameScreen implements Screen {
     screenWidth = Gdx.graphics.getWidth();
     screenHeight = Gdx.graphics.getHeight();
 
+    //Creates a new world object for simulation of physics.
     world = new World(new Vector2(0.0f, 0.0f), true);
 
     this.track = new TrackLoader(trackName, world, TRACK_WIDTH);
