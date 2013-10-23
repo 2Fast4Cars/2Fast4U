@@ -5,8 +5,10 @@ package com.me.fastcars;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,15 +16,19 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 public class GameScreen implements Screen {
 
-//Declaration of all constants and variables.
-  
+  // Declaration of all constants and variables.
+
   private static int PIXELS_PER_METER = 20; // how many pixels in a meter
 
   public static final int STEER_NONE = 0;
@@ -40,7 +46,7 @@ public class GameScreen implements Screen {
   private static final float POWER = 20;
   private static float TRACK_WIDTH = 100;
   private static int STEERANGLE = 35;
-  
+
   private OrthographicCamera camera;
   private SpriteBatch batch;
   private Texture carTexture;
@@ -50,7 +56,7 @@ public class GameScreen implements Screen {
 
   private int screenWidth;
   private int screenHeight;
-  
+
   private TrackLoader track;
   private String trackName;
   private Rectangle finishLine;
@@ -66,6 +72,8 @@ public class GameScreen implements Screen {
   private BitmapFont lapFontGreen;
   private long startTime;
   private long stopTime;
+  private long timeLapsed = 0;
+  private long timePaused = 0;
 
   private String nameCar1;
   private String nameCar2;
@@ -74,7 +82,7 @@ public class GameScreen implements Screen {
   private boolean finishedCar1;
   private boolean finishedCar2;
   private boolean raceStarted = false;
-
+  private boolean gamePaused = false;
 
   // 0 if no one won, 1 if player 1 and 2 if player 2 etc.
   private short whoWon = 0;
@@ -82,17 +90,20 @@ public class GameScreen implements Screen {
   private long raceTimeCar1;
   private long raceTimeCar2;
 
-  
   private FastCars fastCars;
   public Car car;
   public Car car2;
 
   /**
    * 
-   * @param fastCar - The game object. Required in order to know the settings.
-   * @param track - The track started.
-   * @param name1 - The name of the first player.
-   * @param name2 - The name of the 2nd player.
+   * @param fastCar
+   *          - The game object. Required in order to know the settings.
+   * @param track
+   *          - The track started.
+   * @param name1
+   *          - The name of the first player.
+   * @param name2
+   *          - The name of the 2nd player.
    */
   public GameScreen(FastCars fastCar, String track, String name1, String name2) {
     this.fastCars = fastCar;
@@ -101,32 +112,88 @@ public class GameScreen implements Screen {
     this.nameCar2 = name2;
   }
 
-  
-  // The main loop of the program. Thill will handle the rendering and making sure that the location updates.
-  //The render method is called over and over again.
+  // The main loop of the program. Thill will handle the rendering and making
+  // sure that the location updates.
+  // The render method is called over and over again.
   @Override
   public void render(float delta) {
     Gdx.gl.glClearColor(0, 0, 0, 1);
     Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
-    //Simulates the physical world.
-    world.step(Gdx.app.getGraphics().getDeltaTime(), 3, 3);
+    // Simulates the physical world.
+    if(!gamePaused)
+      world.step(Gdx.app.getGraphics().getDeltaTime(), 3, 3);
     world.clearForces();
 
-    //Renders the first and second car.
+    // Renders the first and second car.
     renderFirstCar();
     renderSecondCar();
 
-    //Updates and renders the car laps as well as the timer.
+    // Updates and renders the car laps as well as the timer.
     updateCarLaps();
     drawTimerInfo();
     if (finishedCar1 && finishedCar2)
       renderRaceCompleteMenu();
+
+    if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
+      if (raceStarted) {
+        if (!gamePaused)
+          timePaused = System.currentTimeMillis() - (startTime);
+        gamePaused = true;
+        bgMusic.pause();
+      }
+    }
+
+    if (gamePaused)
+      renderPauseMenu();
+
+  }
+
+  private void renderPauseMenu() {
+
+    batch.begin();
+    menuSprite.setPosition(camera.position.x - (menuSprite.getWidth() / 2),
+        camera.position.y - (menuSprite.getHeight() / 10)*4);
+    menuSprite.setScale(0.6f, 0.4f);
+
+    timerFont.draw(batch, "Do you really want to quit?",
+        (camera.position.x - 120), (camera.position.y + 60));
+    
+    Color previousColor = timerFont.getColor();
+    timerFont.setColor(new Color(Color.RED));
+    timerFont.draw(batch, "[Y]",
+        (camera.position.x - 55), (camera.position.y + 20));
+    timerFont.setColor(new Color(previousColor));
+    timerFont.draw(batch, "es!",
+        (camera.position.x - 28), (camera.position.y + 20));
+    timerFont.setColor(new Color(Color.GREEN));
+    timerFont.draw(batch, "[N]",
+        (camera.position.x+11), (camera.position.y + 20));
+    timerFont.setColor(new Color(previousColor));
+    timerFont.draw(batch, "o!",
+        (camera.position.x + 39), (camera.position.y + 20));
+    timerFont.setColor(previousColor);
+    
+    menuSprite.draw(batch);
+    batch.end();
+
+    if (Gdx.input.isKeyPressed(Keys.Y)) {
+      fastCars.setScene(new LevelMenu(fastCars));
+
+    }
+    
+    else if(Gdx.input.isKeyPressed(Keys.N))
+    {
+      bgMusic.play();
+      gamePaused = false;
+      startTime = System.currentTimeMillis() - timePaused;
+    }
     
 
   }
 
-  //When the race is over this method will be contacted and render the menu for the return menu.
+  // When the race is over this method will be contacted and render the menu for
+  // the return menu.
   private void renderRaceCompleteMenu() {
     batch.begin();
     menuSprite.setPosition(camera.position.x - (menuSprite.getWidth() / 2),
@@ -156,13 +223,11 @@ public class GameScreen implements Screen {
       bgMusic.stop();
       fastCars.setScene(new LevelMenu(fastCars));
     }
-    
-
 
     batch.end();
   }
 
-  //Renders the count down in the beginning.
+  // Renders the count down in the beginning.
   private void renderCountDown(float x, float y) {
     CharSequence timeString;
     stopTime = System.currentTimeMillis() - startTime;
@@ -182,8 +247,8 @@ public class GameScreen implements Screen {
     lapFontRed.draw(batch, drawString, x, y);
   }
 
-  //Renders everything centered around the first car.
-  //This will set the cameras origo to 0,0.
+  // Renders everything centered around the first car.
+  // This will set the cameras origo to 0,0.
   private void renderFirstCar() {
 
     CharSequence currentLapCar1 = String.format("Lap: %d/3", car.getLap());
@@ -202,7 +267,7 @@ public class GameScreen implements Screen {
     camera.update();
 
     batch.setProjectionMatrix(camera.combined);
-
+    
     updateCar1();
 
     batch.begin();
@@ -233,8 +298,8 @@ public class GameScreen implements Screen {
 
   }
 
-  //Renders everything centered around the 2nd car.
-  //This method sets the camera to origo around the graphics.width/2.
+  // Renders everything centered around the 2nd car.
+  // This method sets the camera to origo around the graphics.width/2.
   private void renderSecondCar() {
     Gdx.gl.glViewport(Gdx.graphics.getWidth() / 2, 0,
         Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight());
@@ -254,6 +319,7 @@ public class GameScreen implements Screen {
 
     batch.setProjectionMatrix(camera.combined);
 
+    
     updateCar2();
 
     batch.begin();
@@ -281,7 +347,7 @@ public class GameScreen implements Screen {
 
   }
 
-  //Draws the timer on the top of the screen.
+  // Draws the timer on the top of the screen.
   private void drawTimerInfo() {
 
     if (raceStarted) {
@@ -301,18 +367,20 @@ public class GameScreen implements Screen {
 
       CharSequence timeString;
 
-      if (finishedCar1 && finishedCar2 && stopTime > 0) {
+      if (gamePaused)
+        timeString = this.formatTime(timePaused);
+      else if (finishedCar1 && finishedCar2 && stopTime > 0) {
         timeString = this.formatTime(stopTime);
       }
 
       else if (finishedCar1 && finishedCar2 && stopTime == 0) {
-        stopTime = System.currentTimeMillis() - startTime;
+        stopTime = System.currentTimeMillis() - (startTime);
         timeString = this.formatTime(stopTime);
-        System.out.println("Hej");
       }
 
       else
-        timeString = this.formatTime((System.currentTimeMillis() - startTime));
+        timeString = this
+            .formatTime((System.currentTimeMillis() - (startTime)));
 
       batch.begin();
       timerFont.setColor(1, 1, 1, 1);
@@ -326,8 +394,8 @@ public class GameScreen implements Screen {
 
   }
 
-  //Will handle the inputs for the first car as well as update the sprite
-  //to follow the physical body of the car.
+  // Will handle the inputs for the first car as well as update the sprite
+  // to follow the physical body of the car.
   private void updateCar1() {
 
     Vector2 carPosition = car.getPosition();
@@ -367,8 +435,8 @@ public class GameScreen implements Screen {
 
   }
 
-  //Will handle the inputs for the second car as well as update the sprite
-  //to follow the physical body of the car.
+  // Will handle the inputs for the second car as well as update the sprite
+  // to follow the physical body of the car.
   private void updateCar2() {
 
     Vector2 car2Position = car2.getPosition();
@@ -419,13 +487,14 @@ public class GameScreen implements Screen {
         if ((car.getLap() + 1) == 2) {
           if (whoWon == 0)
             this.whoWon = 1;
-          //Car1 will record twice for some reason, this should prevent this.
+          // Car1 will record twice for some reason, this should prevent this.
           if (!finishedCar1) {
-            raceTimeCar1 = System.currentTimeMillis() - startTime;
+            raceTimeCar1 = System.currentTimeMillis()
+                - (startTime - timeLapsed);
             new HighScore(this.fastCars).checkIfTimeIsBetterAndSave(nameCar1,
                 formatTime(raceTimeCar1), this.trackName);
           }
-         
+
           finishedCar1 = true;
 
         } else {
@@ -505,7 +574,6 @@ public class GameScreen implements Screen {
 
   }
 
-  
   @Override
   public void dispose() {
     batch.dispose();
@@ -514,13 +582,13 @@ public class GameScreen implements Screen {
     world.dispose();
   }
 
-  //Formats the time string as the string will be formated in milliseconds when passed from Libgdx.
+  // Formats the time string as the string will be formated in milliseconds when
+  // passed from Libgdx.
   private String formatTime(long time) {
     double rest = time % 1000 / 10;
     double seconds = (double) time / 1000;
     double minutes = seconds / 60;
     seconds = seconds % 60;
-
 
     return String.format("%02d:%02d:%02d", (int) minutes, (int) seconds,
         (int) rest);
@@ -532,8 +600,9 @@ public class GameScreen implements Screen {
 
   }
 
-  //This method will be called ONCE when the object is first displayed.
-  //Here we will set up most of the inmformation as well as make sure that all the fonts/sprites etc have been loaded.
+  // This method will be called ONCE when the object is first displayed.
+  // Here we will set up most of the inmformation as well as make sure that all
+  // the fonts/sprites etc have been loaded.
   @Override
   public void show() {
 
@@ -566,7 +635,7 @@ public class GameScreen implements Screen {
     screenWidth = Gdx.graphics.getWidth();
     screenHeight = Gdx.graphics.getHeight();
 
-    //Creates a new world object for simulation of physics.
+    // Creates a new world object for simulation of physics.
     world = new World(new Vector2(0.0f, 0.0f), true);
 
     this.track = new TrackLoader(trackName, world, TRACK_WIDTH);
